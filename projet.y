@@ -6,7 +6,7 @@
 	%token REEL BOOLEEN CARACTERE CHAINE CSTE_ENTIERE VARIABLE PROCEDURE
 	%token FONCTION PARENTHESE_OUVRANTE PARENTHESE_FERMANTE VIDE RETOURNE SI
 	%token ALORS SINON TANT_QUE FAIRE OPAFF INF INFEGAL SUP SUEGAL CSTE_REELE
-	%token DIFF ET OU CSTE_CARACTERE
+	%token DIFF ET OU CSTE_CARACTERE CSTE_CHAINE
 %%
 programme             : PROG corps ;
 
@@ -65,7 +65,7 @@ declaration_variable  : VARIABLE IDF DEUX_POINTS nom_type ;
 
 declaration_procedure : PROCEDURE IDF liste_parametres corps ;
 
-declaration_fonction  : FONCTION IDF liste_parametres RETOURNE type_simple 							corps
+declaration_fonction  : FONCTION IDF liste_parametres RETOURNE type_simple corps
 					  ;
 
 liste_parametres      :
@@ -109,13 +109,15 @@ condition             :  SI expression
 
 tant_que              : TANT_QUE expression FAIRE liste_instructions ;
 
-affectation           : variable OPAFF expression ;
+affectation           : variable OPAFF expression1 ;
 
 vararithmetique       : CSTE_ENTIERE
 					  | CSTE_REELE
 					  ;
 
-varchar				  : CSTE_CARACTERE ; // Ajouter chaine caractere
+varchar				  : CSTE_CARACTERE
+					  | CSTE_CHAINE
+					  ;
 
 varcomparative		  : VIDE
 					  | BOOL

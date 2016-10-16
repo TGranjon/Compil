@@ -41,6 +41,8 @@ fin {return FIN;}
 vrai|faux {return BOOLEEN;}
 0|[1-9][0-9]* {return CSTE_ENTIERE;}
 [1-9]*[0-9]\.[0-9]* {return CSTE_REELE;}
+\'[a-z A-Z]\' {return CSTE_CARACTERE;}
+\"[a-z A-Z]+\" {return CSTE_CHAINE};
 et {return ET;}
 ou {return OU;}
 \n {nb_lignes++;}
