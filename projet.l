@@ -16,6 +16,7 @@ int nb_lignes=1;
 \} 							{return CROCHET_FERMANT;}
 \,							{return VIRGULE;}
 \. 							{return POINT;}
+".."						{return POINTPOINT;}
 \( 							{return PARENTHESE_OUVRANTE;}
 \) 							{return PARENTHESE_FERMANTE;}
 := 							{return OPAFF;}
@@ -45,12 +46,14 @@ sinon 						{return SINON;}
 faire 						{return FAIRE;}
 debut 						{return DEBUT;}
 fin 						{return FIN;}
+pour						{return POUR;}
+jusqua						{return JUSQUA;}
 
 vrai|faux 					{return BOOLEEN;}
 0|[1-9][0-9]* 				{return CSTE_ENTIERE;}
 [1-9]*[0-9]\.[0-9]+ 		{return CSTE_REELE;}			/*au moins un chiffre après le point*/
 \'[a-z A-Z]\' 				{return CSTE_CARACTERE;}
-\"[a-z A-Z]+\" 				{return CSTE_CHAINE};
+\"[a-z A-Z]+\" 				{return CSTE_CHAINE;}
 
 et 							{return ET;}
 ou 							{return OU;}
@@ -58,6 +61,7 @@ ou 							{return OU;}
 
 vide						{return VIDE;}			/*ajout*/
 
-lire						{return(LIRE);}          /*ajout*/
-ecrire						{return(ECRIRE);}		 /*ajout*/
+lire						{return LIRE;}          /*ajout*/
+ecrire						{return ECRIRE;}		 /*ajout*/
+retourne					{return RETOURNE;}
 %%
