@@ -6,9 +6,10 @@
 %}
 	%token PROG 
 	%token TABLEAU STRUCT FSTRUCT
-	%token POINT_VIRGULE DEUX_POINTS CROCHET_OUVRANT CROCHET_FERMANT VIRGULE POINT POINTPOINT PARENTHESE_OUVRANTE PARENTHESE_FERMANTE OPAFF
+	%token POINT_VIRGULE DEUX_POINTS CROCHET_OUVRANT CROCHET_FERMANT VIRGULE POINT POINTPOINT PARENTHESE_OUVRANTE PARENTHESE_FERMANTE OPAFF PIPE
 	%token EGAL INF INFEGAL SUP SUPEGAL DIFF
-	%token ENTIER REEL BOOL CARACTERE VARIABLE PROCEDURE FONCTION RETOURNE CHAINE IDF  
+	%token ENTIER REEL BOOL CARACTERE VARIABLE PROCEDURE FONCTION RETOURNE CHAINE IDF 
+	%token POURCENT_ENTIER POURCENT_REEL POURCENT_CHAINE POURCENT_CARACTERE
 
 	%token SI ALORS SINON TANT_QUE FAIRE DEBUT FIN POUR JUSQUA 
 
@@ -25,7 +26,7 @@ corps                 : liste_declarations liste_instructions
 					  ;
 
 liste_declarations    : declaration 
-				      | liste_declarations POINT_VIRGULE declaration
+				      | liste_declarations PIPE declaration
 					  ;
 
 liste_instructions    : DEBUT suite_liste_inst FIN ;
@@ -34,10 +35,10 @@ suite_liste_inst      : instruction
 			          | suite_liste_inst POINT_VIRGULE instruction
 					  ;
 
-declaration           : declaration_type
-					  | declaration_variable
-					  | declaration_procedure
-					  | declaration_fonction
+declaration           : declaration_type POINT_VIRGULE
+					  | declaration_variable POINT_VIRGULE
+					  | declaration_procedure POINT_VIRGULE
+					  | declaration_fonction POINT_VIRGULE
 					  ;
 
 declaration_type      : type_simple IDF DEUX_POINTS suite_declaration_type ;
@@ -52,7 +53,7 @@ liste_dimensions      : une_dimension
 					  | liste_dimensions VIRGULE une_dimension
 					  ;
 
-une_dimension         : vararithmetique POINTPOINT vararithmetique
+une_dimension         : variable POINTPOINT variable /*Demander pour nature des dimensions*/
 
 liste_champs          : un_champ
 					  | liste_champs POINT_VIRGULE un_champ
@@ -78,7 +79,7 @@ declaration_procedure : PROCEDURE IDF liste_parametres corps ;
 declaration_fonction  : FONCTION IDF liste_parametres RETOURNE type_simple corps
 					  ;
 
-liste_parametres      :
+liste_parametres      :	PARENTHESE_OUVRANTE PARENTHESE_FERMANTE
 					  | PARENTHESE_OUVRANTE liste_param PARENTHESE_FERMANTE
 					  ;
 
@@ -88,15 +89,21 @@ liste_param           : un_param
 
 un_param              : IDF DEUX_POINTS type_simple ;
 
-instruction           : affectation
-					  | condition
-					  | tant_que
-					  | pour
-					  | appel
+instruction           : affectation POINT_VIRGULE
+					  | condition POINT_VIRGULE
+					  | tant_que POINT_VIRGULE
+					  | pour POINT_VIRGULE
+					  | appel POINT_VIRGULE
 					  | VIDE
-					  | RETOURNE resultat_retourne
+					  | RETOURNE resultat_retourne POINT_VIRGULE
 					  | LIRE PARENTHESE_OUVRANTE liste_variables PARENTHESE_FERMANTE POINT_VIRGULE
-					  | ECRIRE PARENTHESE_OUVRANTE format suite_ecriture PARENTHESE_FERMANTE /*Ecrire format*/
+					  | ECRIRE PARENTHESE_OUVRANTE format suite_ecriture PARENTHESE_FERMANTE POINT_VIRGULE
+					  ;
+					  
+format				  : POURCENT_ENTIER
+					  | POURCENT_REEL
+					  | POURCENT_CHAINE
+					  | POURCENT_CARACTERE
 					  ;
 
 pour				  : POUR PARENTHESE_OUVRANTE variable JUSQUA variable PARENTHESE_FERMANTE FAIRE liste_instructions;
@@ -105,21 +112,17 @@ suite_ecriture		  :
 					  | VIRGULE variable suite_ecriture
 					  ;
 
-liste_variables1	  :
-					  | liste_variables2
+liste_variables	  	  : variable
+					  | liste_variables VIRGULE variable
 					  ;
 
-liste_variables2	  : variable
-					  | variable VIRGULE liste_variables2
-					  ;
-
-resultat_retourne     :
-					  | expression1 /*Toujours soucis avec les variables*/
+resultat_retourne     : VIDE
+					  | variable
 					  ;
 
 appel                 : IDF liste_arguments ;
 
-liste_arguments       :
+liste_arguments       : PARENTHESE_OUVRANTE PARENTHESE_FERMANTE
 					  | PARENTHESE_OUVRANTE liste_args PARENTHESE_FERMANTE
 					  ;
 
@@ -127,7 +130,7 @@ liste_args            : un_arg
 					  | liste_args VIRGULE un_arg
 					  ;
 
-un_arg                : expression1 ; /*soucis variables*/
+un_arg                : variable ;
 
 condition             :  SI expressioncomp
                          ALORS liste_instructions
@@ -136,12 +139,20 @@ condition             :  SI expressioncomp
 
 tant_que              : TANT_QUE expressioncomp FAIRE liste_instructions ;
 
-affectation           : variable OPAFF expression1 ;
+affectation           : variable OPAFF variable
+					  | varchar OPAFF expressionchar
+					  | variable OPAFF expression1
+					  ;
 
-variable			  : vararithmetique /*Ajouter variables complexes (variables, tableaux, fonctions)*/
+variable			  : vararithmetique
 					  | varchar
+					  | IDF
+					  | TABLEAU
+					  | element_tab
 					  | BOOL
 					  ;
+					  
+element_tab			  : TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT ; /*Trouver comment integrer variable*/
 
 vararithmetique       : CSTE_ENTIERE
 					  | CSTE_REELE
@@ -149,10 +160,6 @@ vararithmetique       : CSTE_ENTIERE
 
 varchar				  : CSTE_CARACTERE
 					  | CSTE_CHAINE
-					  ;
- 
-varcomparative		  : VIDE
-					  | BOOL
 					  ;
 
 varlogique			  : ET
@@ -181,14 +188,14 @@ expression3			   : vararithmetique
 					   | PARENTHESE_OUVRANTE expression1 PARENTHESE_FERMANTE
 					   ;
 
-expressionchar		   : varchar PLUS varchar ; /*Probablement non utilisé*/
+expressionchar		   : varchar PLUS varchar ;
 
 expressioncomp		   : vararithmetique comparateur vararithmetique
 					   | varchar comparateur varchar
 					   | BOOL varlogique BOOL
-					   | expressioncomp varlogique expressioncomp
 					   | expressioncomp varlogique BOOL
-					   /*Ajouter varcomparative*/
+					   | expressioncomp varlogique expressioncomp
+					   | variable comparateur VIDE
 					   ;
 
 %%

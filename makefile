@@ -12,10 +12,10 @@ lex.yy.c : projet.l
 	lex projet.l
 
 lex.yy.o : lex.yy.c
-	gcc -c -Wall lex.yy.c
+	gcc -c lex.yy.c
 
-arith : lex.yy.o y.tab.c
-	gcc -Wall -o projet lex.yy.o y.tab.c -ly -ll
+projet : lex.yy.o y.tab.c
+	gcc -o projet lex.yy.o y.tab.c -ly -ll
 
 
 propre :
