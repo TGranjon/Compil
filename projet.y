@@ -53,7 +53,7 @@ liste_dimensions      : une_dimension
 					  | liste_dimensions VIRGULE une_dimension
 					  ;
 
-une_dimension         : variable POINTPOINT variable /*Demander pour nature des dimensions*/
+une_dimension         : expression1 POINTPOINT expression1 /*Le resultat devra etre entier*/
 
 liste_champs          : un_champ
 					  | liste_champs POINT_VIRGULE un_champ
