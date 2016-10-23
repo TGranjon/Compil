@@ -25,6 +25,10 @@ int nb_lignes=1;
 ">=" 						{return SUPEGAL;}
 "<>" 						{return DIFF;}
 "=="						{return EGAL;}
+\+							{return PLUS;}
+\-							{return MOINS;}
+\*							{return MULT;}
+\/							{return DIV;}
 \%entier					{return POURCENT_ENTIER;}
 \%reel						{return POURCENT_REEL;}
 \%chaine					{return POURCENT_CHAINE;}
