@@ -1,5 +1,0 @@
-pgTEST1
-var A : entier
-debut
-A := 3 + 4 
-fin
