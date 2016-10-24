@@ -4,7 +4,7 @@
   extern int yyerror() ;
   extern int nb_lignes ;
 %}
-	%token PROG 
+	%token PROG FPROG
 	%token TABLEAU STRUCT FSTRUCT
 	%token POINT_VIRGULE DEUX_POINTS CROCHET_OUVRANT CROCHET_FERMANT VIRGULE POINT POINTPOINT PARENTHESE_OUVRANTE PARENTHESE_FERMANTE OPAFF PIPE
 	%token EGAL INF INFEGAL SUP SUPEGAL DIFF
@@ -19,7 +19,7 @@
 	%token ET OU
 	%token LIRE ECRIRE
 %%
-programme             : PROG corps ;
+programme             : PROG corps FPROG;
 
 corps                 : liste_declarations liste_instructions
 		              | liste_instructions
@@ -32,7 +32,7 @@ liste_declarations    : declaration
 liste_instructions    : DEBUT suite_liste_inst FIN ;
 
 suite_liste_inst      : instruction
-			          | suite_liste_inst POINT_VIRGULE instruction
+			          | suite_liste_inst PIPE instruction
 					  ;
 
 declaration           : declaration_type POINT_VIRGULE
@@ -56,7 +56,7 @@ liste_dimensions      : une_dimension
 une_dimension         : expression1 POINTPOINT expression1 /*Le resultat devra etre entier*/
 
 liste_champs          : un_champ
-					  | liste_champs POINT_VIRGULE un_champ
+					  | liste_champs PIPE un_champ
 					  ;
 
 un_champ              : IDF DEUX_POINTS nom_type ;
@@ -84,7 +84,7 @@ liste_parametres      :	PARENTHESE_OUVRANTE PARENTHESE_FERMANTE
 					  ;
 
 liste_param           : un_param
-					  | liste_param POINT_VIRGULE un_param
+					  | liste_param PIPE un_param
 					  ;
 
 un_param              : IDF DEUX_POINTS type_simple ;
@@ -109,7 +109,8 @@ format				  : POURCENT_ENTIER
 pour				  : POUR PARENTHESE_OUVRANTE variable JUSQUA variable PARENTHESE_FERMANTE FAIRE liste_instructions;
 
 suite_ecriture		  :
-					  | VIRGULE variable suite_ecriture
+					  | variable
+					  | suite_ecriture VIRGULE variable
 					  ;
 
 liste_variables	  	  : variable
@@ -132,12 +133,12 @@ liste_args            : un_arg
 
 un_arg                : variable ;
 
-condition             :  SI expressioncomp
+condition             :  SI PARENTHESE_OUVRANTE expressioncomp PARENTHESE_FERMANTE
                          ALORS liste_instructions
                          SINON liste_instructions
 					  ;
 
-tant_que              : TANT_QUE expressioncomp FAIRE liste_instructions ;
+tant_que              : TANT_QUE PARENTHESE_OUVRANTE expressioncomp PARENTHESE_FERMANTE FAIRE liste_instructions ;
 
 affectation           : variable OPAFF variable
 					  | varchar OPAFF expressionchar
@@ -152,7 +153,7 @@ variable			  : vararithmetique
 					  | BOOL
 					  ;
 					  
-element_tab			  : TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT ; /*Trouver comment integrer variable*/
+element_tab			  : TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT ;
 
 vararithmetique       : CSTE_ENTIERE
 					  | CSTE_REELE
