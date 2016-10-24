@@ -1,0 +1,6 @@
+pg03
+entier K : entier tab01 [ 1 .. 1 ] ;
+debut
+tab01 [ 1 ] := 8 ;
+fin
+sortie
