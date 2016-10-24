@@ -1,0 +1,6 @@
+pg04
+var A : entier ;
+debut
+tant que ( vrai et vrai ) faire debut vide fin ;
+fin
+sortie
