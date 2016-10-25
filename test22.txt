@@ -1,0 +1,11 @@
+pgliste
+entier S :
+ struct 
+B : entier  | 
+A  : reel 
+fstruct ;
+
+debut
+vide
+fin
+sortie
