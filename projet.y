@@ -185,7 +185,7 @@ expression2			   : expression2 MULT expression2
 					   | expression3
 				       ;
 
-expression3			   : vararithmetique
+expression3			   : variable
 					   | PARENTHESE_OUVRANTE expression1 PARENTHESE_FERMANTE
 					   ;
 
