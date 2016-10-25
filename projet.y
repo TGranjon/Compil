@@ -151,6 +151,7 @@ variable			  : vararithmetique
 					  | TABLEAU
 					  | element_tab
 					  | BOOL
+					  | appel
 					  ;
 					  
 element_tab			  : TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT ;
