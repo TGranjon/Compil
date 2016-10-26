@@ -19,185 +19,190 @@
 	%token ET OU
 	%token LIRE ECRIRE
 %%
-programme             : PROG corps FPROG;
 
-corps                 : liste_declarations liste_instructions
-		              | liste_instructions
-					  ;
+programme		: PROG corps FPROG;
 
-liste_declarations    : declaration 
-				      | liste_declarations PIPE declaration
-					  ;
+corps                   : liste_declarations liste_instructions
+		        | liste_instructions
+			;
 
-liste_instructions    : DEBUT suite_liste_inst FIN ;
+liste_declarations	: declaration 
+			| liste_declarations PIPE declaration
+			;
 
-suite_liste_inst      : instruction
-			          | suite_liste_inst PIPE instruction
-					  ;
+liste_instructions	: DEBUT suite_liste_inst FIN ;
 
-declaration           : declaration_type POINT_VIRGULE
-					  | declaration_variable POINT_VIRGULE
-					  | declaration_procedure POINT_VIRGULE
-					  | declaration_fonction POINT_VIRGULE
-					  ;
+suite_liste_inst	: instruction
+			| suite_liste_inst PIPE instruction
+			;
 
-declaration_type      : type_simple IDF DEUX_POINTS suite_declaration_type ;
+declaration		: declaration_type POINT_VIRGULE
+			| declaration_variable POINT_VIRGULE
+			| declaration_procedure POINT_VIRGULE
+			| declaration_fonction POINT_VIRGULE
+			;
 
-suite_declaration_type : STRUCT liste_champs FSTRUCT
-					   | nom_type TABLEAU dimension
-					   ;
+declaration_type	: type_simple IDF DEUX_POINTS suite_declaration_type ;
 
-dimension             : CROCHET_OUVRANT liste_dimensions CROCHET_FERMANT ;
+suite_declaration_type	: STRUCT liste_champs FSTRUCT
+			| nom_type TABLEAU dimension
+			;
 
-liste_dimensions      : une_dimension
-					  | liste_dimensions VIRGULE une_dimension
-					  ;
+dimension		: CROCHET_OUVRANT liste_dimensions CROCHET_FERMANT ;
 
-une_dimension         : expression1 POINTPOINT expression1 /*Le resultat devra etre entier*/
+liste_dimensions	: une_dimension
+			| liste_dimensions VIRGULE une_dimension
+			;
 
-liste_champs          : un_champ
-					  | liste_champs PIPE un_champ
-					  ;
+une_dimension		: expression1 POINTPOINT expression1; /*Le resultat devra etre entier*/
 
-un_champ              : IDF DEUX_POINTS nom_type ;
 
-nom_type              : type_simple
-					  | IDF
-					  ;
+liste_champs		: un_champ
+			| liste_champs PIPE un_champ
+			;
 
-type_simple           : ENTIER
-					  | REEL
-					  | BOOLEEN
-					  | CARACTERE
-					  | CHAINE CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT
-					  ;
+un_champ		: IDF DEUX_POINTS nom_type ;
 
-declaration_variable  : VARIABLE IDF DEUX_POINTS nom_type ;
+nom_type		: type_simple
+			| IDF
+			;
 
-declaration_procedure : PROCEDURE IDF liste_parametres corps ;
+type_simple		: ENTIER
+			| REEL
+			| BOOLEEN
+			| CARACTERE
+			| CHAINE CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT
+			;
 
-declaration_fonction  : FONCTION IDF liste_parametres RETOURNE type_simple corps
-					  ;
+declaration_variable	: VARIABLE IDF DEUX_POINTS nom_type ;
 
-liste_parametres      :	PARENTHESE_OUVRANTE PARENTHESE_FERMANTE
-					  | PARENTHESE_OUVRANTE liste_param PARENTHESE_FERMANTE
-					  ;
+declaration_procedure	: PROCEDURE IDF liste_parametres corps ;
 
-liste_param           : un_param
-					  | liste_param PIPE un_param
-					  ;
+declaration_fonction	: FONCTION IDF liste_parametres RETOURNE type_simple corps
+			;
 
-un_param              : IDF DEUX_POINTS type_simple ;
+liste_parametres	: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE
+			| PARENTHESE_OUVRANTE liste_param PARENTHESE_FERMANTE
+			;
 
-instruction           : affectation POINT_VIRGULE
-					  | condition POINT_VIRGULE
-					  | tant_que POINT_VIRGULE
-					  | pour POINT_VIRGULE
-					  | appel POINT_VIRGULE
-					  | VIDE
-					  | RETOURNE resultat_retourne POINT_VIRGULE
-					  | LIRE PARENTHESE_OUVRANTE liste_variables PARENTHESE_FERMANTE POINT_VIRGULE
-					  | ECRIRE PARENTHESE_OUVRANTE format suite_ecriture PARENTHESE_FERMANTE POINT_VIRGULE
-					  ;
+
+liste_param		: un_param
+			| liste_param PIPE un_param
+			;
+
+un_param		: IDF DEUX_POINTS type_simple ;
+
+instruction		: affectation POINT_VIRGULE
+			| condition POINT_VIRGULE
+			| tant_que POINT_VIRGULE
+			| pour POINT_VIRGULE
+			| appel POINT_VIRGULE
+			| VIDE
+			| RETOURNE resultat_retourne POINT_VIRGULE
+			| LIRE PARENTHESE_OUVRANTE liste_variables PARENTHESE_FERMANTE POINT_VIRGULE
+			| ECRIRE PARENTHESE_OUVRANTE format suite_ecriture PARENTHESE_FERMANTE POINT_VIRGULE
+			;
 					  
-format				  : POURCENT_ENTIER
-					  | POURCENT_REEL
-					  | POURCENT_CHAINE
-					  | POURCENT_CARACTERE
-					  ;
+format			: POURCENT_ENTIER
+			| POURCENT_REEL
+			| POURCENT_CHAINE
+			| POURCENT_CARACTERE
+			;
 
-pour				  : POUR PARENTHESE_OUVRANTE variable JUSQUA variable PARENTHESE_FERMANTE FAIRE liste_instructions;
+pour			: POUR PARENTHESE_OUVRANTE variable JUSQUA variable PARENTHESE_FERMANTE FAIRE liste_instructions;
 
-suite_ecriture		  :
-					  | variable
-					  | suite_ecriture VIRGULE variable
-					  ;
+suite_ecriture		:
+			| variable
+			| suite_ecriture VIRGULE variable
+			;
 
-liste_variables	  	  : variable
-					  | liste_variables VIRGULE variable
-					  ;
+liste_variables		: variable
+			| liste_variables VIRGULE variable
+			;
 
-resultat_retourne     : VIDE
-					  | variable
-					  ;
+resultat_retourne	: VIDE
+			| variable
+			;
 
-appel                 : IDF liste_arguments ;
+appel			: IDF liste_arguments ;
 
-liste_arguments       : PARENTHESE_OUVRANTE PARENTHESE_FERMANTE
-					  | PARENTHESE_OUVRANTE liste_args PARENTHESE_FERMANTE
-					  ;
+liste_arguments		: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE
+			| PARENTHESE_OUVRANTE liste_args PARENTHESE_FERMANTE
+			;
 
-liste_args            : un_arg
-					  | liste_args VIRGULE un_arg
-					  ;
+liste_args		: un_arg
+			| liste_args VIRGULE un_arg
+			;
 
-un_arg                : variable ;
+un_arg			: variable ;
 
-condition             :  SI PARENTHESE_OUVRANTE expressioncomp PARENTHESE_FERMANTE
-                         ALORS liste_instructions
-                         SINON liste_instructions
-					  ;
+condition		: SI PARENTHESE_OUVRANTE expressioncomp PARENTHESE_FERMANTE
+				ALORS liste_instructions
+				SINON liste_instructions
+			;
 
-tant_que              : TANT_QUE PARENTHESE_OUVRANTE expressioncomp PARENTHESE_FERMANTE FAIRE liste_instructions ;
+tant_que		: TANT_QUE PARENTHESE_OUVRANTE expressioncomp PARENTHESE_FERMANTE FAIRE liste_instructions ;
 
-affectation           : variable OPAFF variable
-					  | varchar OPAFF expressionchar
-					  | variable OPAFF expression1
-					  ;
+affectation		: variable OPAFF variable
+			| varchar OPAFF expressionchar
+			| variable OPAFF expression1
+			;
 
-variable			  : vararithmetique
-					  | varchar
-					  | IDF
-					  | TABLEAU
-					  | element_tab
-					  | BOOL
-					  ;
+variable		: vararithmetique
+			| varchar
+			| IDF
+			| TABLEAU
+			| element_tab
+			| BOOL
+			| appel
+			;
 					  
-element_tab			  : TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT ;
+element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT ;
 
-vararithmetique       : CSTE_ENTIERE
-					  | CSTE_REELE
-					  ;
+vararithmetique		: CSTE_ENTIERE
+			| CSTE_REELE
+			;
 
-varchar				  : CSTE_CARACTERE
-					  | CSTE_CHAINE
-					  ;
+varchar			: CSTE_CARACTERE
+			| CSTE_CHAINE
+			;
 
-varlogique			  : ET
-					  | OU
-					  ;
+varlogique		: ET
+			| OU
+			;
 
-comparateur           : SUP
-					  | INF
-					  | SUPEGAL
-					  | INFEGAL
-					  | EGAL
-					  | DIFF
-					  ;
+comparateur		: SUP
+			| INF
+			| SUPEGAL
+			| INFEGAL
+			| EGAL
+			| DIFF
+			;
 
-expression1            : expression1 PLUS expression1
-					   | expression1 MOINS expression1
-					   | expression2;
-					   ;
+expression1		: expression1 PLUS expression1
+			| expression1 MOINS expression1
+			| expression2;
+			;
 
-expression2			   : expression2 MULT expression2
-					   | expression2 DIV expression2
-					   | expression3
-				       ;
+expression2		: expression2 MULT expression2
+			| expression2 DIV expression2
+			| expression3
+			;
 
-expression3			   : vararithmetique
-					   | PARENTHESE_OUVRANTE expression1 PARENTHESE_FERMANTE
-					   ;
+expression3		: variable
+			| PARENTHESE_OUVRANTE expression1 PARENTHESE_FERMANTE
+			;
 
-expressionchar		   : varchar PLUS varchar ;
+expressionchar		: varchar PLUS varchar ;
 
-expressioncomp		   : vararithmetique comparateur vararithmetique
-					   | varchar comparateur varchar
-					   | BOOL varlogique BOOL
-					   | expressioncomp varlogique BOOL
-					   | expressioncomp varlogique expressioncomp
-					   | variable comparateur VIDE
-					   ;
+expressioncomp		: vararithmetique comparateur vararithmetique
+			| varchar comparateur varchar
+			| BOOL varlogique BOOL
+			| expressioncomp varlogique BOOL
+			| expressioncomp varlogique expressioncomp
+			| variable comparateur VIDE
+			| variable comparateur variable
+			;
 
 %%
 int yyerror()

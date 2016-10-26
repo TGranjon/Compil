@@ -4,11 +4,21 @@ int nb_lignes=1;
 %}
 
 %%
+<<<<<<< HEAD
 "pg"[0-9 a-z A-Z]+			{return PROG;}
 "sortie"					{return FPROG;}
 "tab"[0-9 a-z A-Z]+		    {return TABLEAU;}
 "struct"[0-9 a-z A-Z]+		{return STRUCT;}
 "fstruct"				    {return FSTRUCT;}
+=======
+"/"[\*](([^\"\*])|([\*]*[\"][^\"]*[\"])|([\*]+[^\*\/\"]))*[\*]+"/"	/* Commentaire sur plusieurs lignes */
+"//".*$ 								/* Commentaire sur une ligne. */
+"pg"[0-9 a-z A-Z]+					{return PROG;}
+"sortie"						{return FPROG;}
+"tab"[0-9 a-z A-Z]+					{return TABLEAU;}
+"struct"[0-9 a-z A-Z]+					{return STRUCT;}
+"fstruct"						{return FSTRUCT;}
+>>>>>>> master
 
 \; 							{return POINT_VIRGULE;}
 \: 							{return DEUX_POINTS;}
@@ -16,22 +26,23 @@ int nb_lignes=1;
 \] 							{return CROCHET_FERMANT;}
 \,							{return VIRGULE;}
 \. 							{return POINT;}
-".."						{return POINTPOINT;}
+".."							{return POINTPOINT;}
 \( 							{return PARENTHESE_OUVRANTE;}
 \) 							{return PARENTHESE_FERMANTE;}
 := 							{return OPAFF;}
 \|							{return PIPE;}
 \< 							{return INF;}
 \> 							{return SUP;}
-"<=" 						{return INFEGAL;}
-">=" 						{return SUPEGAL;}
-"<>" 						{return DIFF;}
-"=="						{return EGAL;}
+"<=" 							{return INFEGAL;}
+">=" 							{return SUPEGAL;}
+"<>" 							{return DIFF;}
+"=="							{return EGAL;}
 \+							{return PLUS;}
 \-							{return MOINS;}
 \*							{return MULT;}
 \/							{return DIV;}
 
+<<<<<<< HEAD
 \%entier					{return POURCENT_ENTIER;}
 \%reel						{return POURCENT_REEL;}
 \%chaine					{return POURCENT_CHAINE;}

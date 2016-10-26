@@ -1,0 +1,7 @@
+pG13
+//erreur : le nom du programme a comme préfixe : pg
+var A : entier ;
+debut
+A := 42 ;
+fin
+sortie
