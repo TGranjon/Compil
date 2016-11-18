@@ -1,0 +1,6 @@
+pg05
+var A : entier ;
+debut
+ce test doit renvoyer une erreur de syntaxe.
+fin
+sortie

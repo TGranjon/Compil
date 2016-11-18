@@ -1,0 +1,15 @@
+pgAddition
+var A : entier ; |
+var B : entier ; |
+fonction Z (M : entier , N : entier) retourne entier //les paramètres doivent être séparés par un pipe
+var C : entier ;
+debut
+C := M + N ; |
+retourne C;
+fin ;
+debut
+A := 3 ; |
+B := 4 ; |
+Z(A , B) ;
+fin
+sortie
