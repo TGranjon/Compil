@@ -1,51 +1,51 @@
 #include "arbre.h"
 /*Possible inclusion de fichiers*/
-/*Ce fichier devra être inclus au moins dans le -> .y*/
+/*Ce fichier devra être inclus au moins dans le .y*/
 
 /*Déclaration des fonctions*/
 
-cellule * creer_arbre()
+cellule creer_arbre()
 {
 	cellule cel;
-	cel->noyau = -1;
-	cel->lexeme = -1;
-	cel->declaration = -1;
-	cel->fils = NULL;
-	cel->frere = NULL;
+	cel.noyau = -1;
+	cel.lexeme = -1;
+	cel.declaration = -1;
+	cel.fils = NULL;
+	cel.frere = NULL;
 	return cel;
 }
 
 void concat_pere_fils(cellule pere, cellule fils) /*Permet d'ajouter la cellule fils en tant que fils de la cellule pere*/
 {
-	pere->fils=fils;
+	pere.fils=&fils;
 }
 
 void concat_pere_frere(cellule pere, cellule frere) /*Permet d'ajouter la cellule frere en tant que frere de la cellule pere*/
 {
-	pere->frere=frere;
+	pere.frere=&frere;
 }
 
-cellule * creer_fils(int noy, int lex, int decl)
+cellule creer_fils(int noy, int lex, int decl)
 {
   cellule cel;
-  cel->noyau=noy;
-  cel->lexeme=lex;
-  cel->declaration=decl;
-  return &cel;
+  cel.noyau=noy;
+  cel.lexeme=lex;
+  cel.declaration=decl;
+  return cel;
 }
 
-cellule * creer_frere(int noy, int lex, int decl)
+cellule creer_frere(int noy, int lex, int decl)
 {
   cellule  cel;
-  cel->noyau=noy;
-  cel->lexeme=lex;
-  cel->declaration=decl;
-  return &cel;
+  cel.noyau=noy;
+  cel.lexeme=lex;
+  cel.declaration=decl;
+  return cel;
 }
 
 int est_vide(cellule * cel)
 {
-	if(cel->noyau==NULL)
+	if(&cel->noyau==NULL)
 		return 0; /*Condition vraie*/
 	else return 1; /*Condition fausse*/
 }
@@ -58,17 +58,21 @@ int est_vide(cellule * cel)
 
 char * lire_arbre(cellule * racine)
 {
+    char * texte;
     if(3<=racine->noyau<=14 || 29<=racine->noyau<=30)
     {
-    	return strcat(lire_arbre(racine->fils->noyau),strcat(racine->noyau,lire_arbre(racine->fils->frere->noyau))); /*Cas de lecture complexe (info contenue dans les fils et les petits freres)*/
+	sprintf(texte,"%d",racine->declaration);
+    	return strcat(lire_arbre(racine->fils),strcat(texte,lire_arbre(racine->fils->frere))); /*Cas de lecture complexe (info contenue dans les fils et les petits freres)*/
     }
     if(15<=racine->noyau<=18 || 26<=racine->noyau<=28 || racine->noyau==31 || 34<=racine->noyau<=36)
     {
-    	return racine->noyau; /*Cas de lecture unique*/
+	sprintf(texte,"%d",racine->declaration);
+    	return texte; /*Cas de lecture unique*/
     }
     if(1<=racine->noyau<=2 || 19<=racine->noyau<=20 || 21<=racine->noyau<=25 || 32<=racine->noyau<=33)
     {
-    	return strcat(racine->noyau,lire_arbre(racine->fils)); /*Cas de lecture en liste (info contenue uniquement dans les fils)*/
+	sprintf(texte,"%d",racine->declaration);
+    	return strcat(texte,lire_arbre(racine->fils)); /*Cas de lecture en ligne (info contenue uniquement dans les fils)*/
     }
-    fprintf(STDERR,"Erreur, noyau non reconnu\n");
+    fprintf(stderr,"Erreur, noyau non reconnu\n");
 }

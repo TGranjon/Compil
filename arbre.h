@@ -1,16 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /*Déclaration de l'arbre abstrait*/
 
-typedef struct cellule
+struct cellule
 {
   int noyau; /*Correspond aux codes ci-dessus*/
   int lexeme; /*Code lexicographique correspondant*/
   int declaration; /*Code correspondant a l'entrée dans la table des déclarations*/
-  cellule * fils; /*Pointeur vers le premier fils*/
-  cellule * frere; /*Pointeur vers le premier frere*/
-}cellule;
+  struct cellule * fils; /*Pointeur vers le premier fils*/
+  struct cellule * frere; /*Pointeur vers le premier frere*/
+};
+
+typedef struct cellule cellule;
 
 /*Définition des codes/noyau*/
 /*Chaque code coorespont à un entier de 1 à 36*/
@@ -54,15 +57,15 @@ typedef struct cellule
 
 /*Prototype des fonctions*/
 
-cellule * creer_arbre();
+cellule creer_arbre();
 
 void concat_pere_fils(cellule pere, cellule fils);
 
 void concat_pere_frere(cellule pere, cellule frere);
 
-cellule * creer_fils(int noy, int lex, int decl);
+cellule creer_fils(int noy, int lex, int decl);
 
-cellule * creer_frere(int noy, int lex, int decl);
+cellule creer_frere(int noy, int lex, int decl);
 
 int est_vide(cellule * cel);
 
