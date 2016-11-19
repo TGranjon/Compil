@@ -6,33 +6,32 @@ int nb_lignes=1;
 %%
 "/"[\*](([^\"\*])|([\*]*[\"][^\"]*[\"])|([\*]+[^\*\/\"]))*[\*]+"/"	/* Commentaire sur plusieurs lignes */
 "//".*$ 								/* Commentaire sur une ligne. */
-"pg"[0-9 a-z A-Z]+					{return PROG;}
+"pg"[0-9 a-z A-Z]+				{return PROG;}
 "sortie"						{return FPROG;}
-"tab"[0-9 a-z A-Z]+					{return TABLEAU;}
-"struct"[0-9 a-z A-Z]+					{return STRUCT;}
+"tab"[0-9 a-z A-Z]+				{return TABLEAU;}
+"struct"[0-9 a-z A-Z]+			{return STRUCT;}
 "fstruct"						{return FSTRUCT;}
 
-\; 							{return POINT_VIRGULE;}
-\: 							{return DEUX_POINTS;}
-\[ 							{return CROCHET_OUVRANT;}
-\] 							{return CROCHET_FERMANT;}
-\,							{return VIRGULE;}
-\. 							{return POINT;}
+\; 								{return POINT_VIRGULE;}
+\: 								{return DEUX_POINTS;}
+\[ 								{return CROCHET_OUVRANT;}
+\] 								{return CROCHET_FERMANT;}
+\,								{return VIRGULE;}
 ".."							{return POINTPOINT;}
-\( 							{return PARENTHESE_OUVRANTE;}
-\) 							{return PARENTHESE_FERMANTE;}
-:= 							{return OPAFF;}
-\|							{return PIPE;}
-\< 							{return INF;}
-\> 							{return SUP;}
+\( 								{return PARENTHESE_OUVRANTE;}
+\) 								{return PARENTHESE_FERMANTE;}
+:= 								{return OPAFF;}
+\|								{return PIPE;}
+\< 								{return INF;}
+\> 								{return SUP;}
 "<=" 							{return INFEGAL;}
 ">=" 							{return SUPEGAL;}
 "<>" 							{return DIFF;}
 "=="							{return EGAL;}
-\+							{return PLUS;}
-\-							{return MOINS;}
-\*							{return MULT;}
-\/							{return DIV;}
+\+								{return PLUS;}
+\-								{return MOINS;}
+\*								{return MULT;}
+\/								{return DIV;}
 
 \%entier						{return POURCENT_ENTIER;}
 \%reel							{return POURCENT_REEL;}
@@ -59,9 +58,9 @@ int nb_lignes=1;
 "pour"							{return POUR;}
 "jusqua"						{return JUSQUA;}
 
-"vrai"|"faux" 						{return BOOL;}
-0|[1-9][0-9]* 						{return CSTE_ENTIERE;}
-[1-9]*[0-9]\.[0-9]+ 					{return CSTE_REELE;}/*au moins un chiffre après le point*/
+"vrai"|"faux" 					{return BOOL;}
+0|[1-9][0-9]* 					{return CSTE_ENTIERE;}
+[1-9]*[0-9]\.[0-9]+ 			{return CSTE_REELE;}/*au moins un chiffre après le point*/
 "et" 							{return ET;}
 "ou" 							{return OU;}
 "vide"							{return VIDE;}
@@ -69,9 +68,9 @@ int nb_lignes=1;
 "lire"							{return LIRE;}
 "ecrire"						{return ECRIRE;}
 
-\'[a-z A-Z]\' 						{return CSTE_CARACTERE;}
-\"[a-z A-Z]+\" 						{return CSTE_CHAINE;}
+\'[a-z A-Z]\' 					{return CSTE_CARACTERE;}
+\"[a-z A-Z]+\" 					{return CSTE_CHAINE;}
 [A-Z] 							{return IDF;}
 
-\n 						   	{nb_lignes++;}
+\n 						   		{nb_lignes++;}
 %%
