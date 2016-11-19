@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "include.h"
 
 /*Déclaration de l'arbre abstrait*/
 
@@ -13,11 +11,13 @@ struct cellule
   struct cellule * frere; /*Pointeur vers le premier frere*/
 };
 
+/*Les constantes ont leur valeur dans declaration*/
 typedef struct cellule cellule;
 
 /*Définition des codes/noyau*/
-/*Chaque code coorespont à un entier de 1 à 36*/
+/*Chaque code coorespont à un entier de 0 à 36*/
 
+#define PROG 0
 #define TABLEAU 1
 #define STRUCT 2
 #define POINTPOINT 3
@@ -57,17 +57,16 @@ typedef struct cellule cellule;
 
 /*Prototype des fonctions*/
 
-cellule creer_arbre();
+cellule creer_arbre_vide();
 
-void concat_pere_fils(cellule pere, cellule fils);
+void concat_pere_fils(cellule * pere, cellule * fils);
 
-void concat_pere_frere(cellule pere, cellule frere);
+void concat_pere_frere(cellule * pere, cellule * frere);
 
-cellule creer_fils(int noy, int lex, int decl);
-
-cellule creer_frere(int noy, int lex, int decl);
+cellule creer_fils_frere(int noy, int lex, int decl);
 
 int est_vide(cellule * cel);
 
 char * lire_arbre(cellule * racine);
 
+void lire_cellule(cellule * racine);
