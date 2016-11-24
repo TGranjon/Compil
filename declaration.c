@@ -54,7 +54,7 @@ int ajouter_struct(int n_lexico)
         tabDecla[n_lexico].region = numRegion;
         tabDecla[n_lexico].description = numrep;
         //tabDecla[n_lexico].execution =
-        //faudrait que je revois le cours pour ce champ-là
+        //Correspond au premier numero de la pile lie a la fonction
         debut_decla++;
     }
     else
