@@ -100,6 +100,24 @@ char * lexeme (int num_lexico){
 	return tableLexico[num_lexico].lexeme;
 }
 
+int avoir_num_lexico (char * lexeme){
+	int num_hash_code = hash_code(lexeme);
+	int indice = tab_hash_code[num_hash_code];
+	int suivant;
+	if(strcmp(tableLexico[indice].lexeme,lexeme)==0){
+		return indice;
+	}
+	else{
+		suivant = tableLexico[indice].suivant;
+		while(suivant!=-1){
+			if(strcmp(tableLexico[suivant].lexeme,lexeme)==0){
+				return indice;
+			}
+		}
+		inserer_lexeme(lexeme);
+	}
+}
+
 
 void affiche_table_lexico(structLexico lex_tab[], int n){
 	assert(n <= TAILLE_LEXICO);
