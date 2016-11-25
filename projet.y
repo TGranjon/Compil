@@ -4,14 +4,14 @@
   extern int yylex() ;
   extern int yyerror() ;
   extern int nb_lignes ;
-  int num_region = 0;
-  int NIS = 0;
-  int case_vide = 0;
-  int nb_champs = 0;
-  int nb_parametres = 0;
-  int nb_dimensions = 0;
-  int nb_declarations = 0; /*A supprimer si inutile*/
-  int nb_instructions = 0;
+  int num_region = 0; /*Incrementer*/
+  int NIS = 0; /*Incrementer, decrementer*/
+  int case_vide = 0; 
+  int nb_champs = 0; /*Incrementer, mise à zero*/
+  int nb_parametres = 0; /*Incrementer, mise à zero*/
+  int nb_dimensions = 0; /*Incrementer, mise à zero*/
+  int nb_declarations = 0; /*Incrementer, mise à zero*//*A supprimer si inutile*/
+  int nb_instructions = 0; /*Incrementer, mise à zero*/
 %}
 	%token PROG FPROG
 	%token TABLEAU STRUCT FSTRUCT
@@ -35,15 +35,15 @@ corps                   : liste_declarations liste_instructions
 		      		    | liste_instructions {$$=$1;}
 						;
 
-liste_declarations	: declaration {$$=$1;}
-					| liste_declarations PIPE declaration
+liste_declarations	: declaration {$$=$1;} /*Incrementer nb_declarations*/
+					| liste_declarations PIPE declaration /*Incrementer nb_declarations*/
 					;
 
 liste_instructions	: DEBUT suite_liste_inst FIN 
 					;
 
-suite_liste_inst	: instruction {$$=$1;}
-					| suite_liste_inst PIPE instruction
+suite_liste_inst	: instruction {$$=$1;} /*Incrementer nb_instructions*/
+					| suite_liste_inst PIPE instruction /*Incrementer nb_instructions*/
 					;
 
 declaration		: declaration_type POINT_VIRGULE
@@ -54,18 +54,18 @@ declaration		: declaration_type POINT_VIRGULE
 
 declaration_type	: type_simple IDF DEUX_POINTS suite_declaration_type ;
 
-suite_declaration_type	: STRUCT liste_champs FSTRUCT {inserer_declaration_struct(int num_decl);} /*num_decl vient de l'association des noms*/ /*Ajouter une variable globale nouvelle case libre*/
-						| nom_type TABLEAU dimension {inserer_declaration_tableau(int num_decl);} /*num_decl vient de l'association des noms*/ /*Ajouter une variable globale nouvelle case libre*/
+suite_declaration_type	: STRUCT liste_champs FSTRUCT {inserer_declaration_struct(int num_decl);} /*num_decl vient de l'association des noms*/ /*Affecter la variable globale nouvelle case libre*/
+						| nom_type TABLEAU dimension {inserer_declaration_tableau(int num_decl);} /*num_decl vient de l'association des noms*/ /*Affecter la variable globale nouvelle case libre*/
 						;
 
 dimension		: CROCHET_OUVRANT liste_dimensions CROCHET_FERMANT
 				;
 
-liste_dimensions	: une_dimension {$$=$1;}
-					| liste_dimensions VIRGULE une_dimension
+liste_dimensions	: une_dimension {$$=$1;} /*Incrementer nb_dimensions*/
+					| liste_dimensions VIRGULE une_dimension /*Incrementer nb_dimensions*/
 					;
 
-une_dimension		: CSTE_ENTIERE POINTPOINT CSTE_ENTIERE
+une_dimension		: CSTE_ENTIERE POINTPOINT CSTE_ENTIERE /*Incrementer nb_dimensions*/
 					;
 
 liste_champs		: un_champ {$$=$1;} /*Appeler la variable globale case_vide apres avoir entre tous les champs (et les avoir comptes)*/
@@ -95,15 +95,15 @@ declaration_procedure	: PROCEDURE IDF liste_parametres corps /*Incrementer num r
 declaration_fonction	: FONCTION IDF liste_parametres RETOURNE type_simple corps /*Incrementer num region et NIS*/{creer_fils_frere(20,?,?);inserer_declaration_fonction(int num_decl);} /*num_decl vient de l'association des noms*//*Affecter la variable globale nouvelle case libre*/
 						;
 
-liste_parametres	: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE {$$=NULL;}/*Est-ce possible?*/
+liste_parametres	: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE {$$=NULL;} /*Est-ce possible?*//*Renvoyer nb_parametres a 0*/
 					| PARENTHESE_OUVRANTE liste_param PARENTHESE_FERMANTE {$$=$2;}
 					;
 
-liste_param		: un_param {$$=$1;}
-				| liste_param PIPE un_param
+liste_param		: un_param {$$=$1;} /*Incrementer nb_parametres*/
+				| liste_param PIPE un_param /*Incrementer nb_parametres*/
 				;
 
-un_param		: IDF DEUX_POINTS type_simple ; /*Compter le nombre de parametres puis appeller case_vide*/
+un_param		: IDF DEUX_POINTS type_simple ; /*Compter le nombre de parametres puis appeller case_vide*//*Incrementer nb_parametres*/
 
 instruction		: affectation POINT_VIRGULE {$$=$1;}
 				| condition POINT_VIRGULE {$$=$1;}
@@ -141,15 +141,15 @@ resultat_retourne	: VIDE {$$=$1;}
 appel			: IDF liste_arguments {$1($2);}
 				;
 
-liste_arguments		: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE {$$=NULL;}/*Est-ce possible?*/
+liste_arguments		: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE {$$=NULL;} /*Est-ce possible?*//*Renvoyer nb_arguments a 0*/
 					| PARENTHESE_OUVRANTE liste_args PARENTHESE_FERMANTE {$$=$2;}
 					;
 
-liste_args		: un_arg {$$=$1;}
-				| liste_args VIRGULE un_arg {$$=$1,$2;}
+liste_args		: un_arg {$$=$1;} /*Incrementer nb_arguments*/
+				| liste_args VIRGULE un_arg {$$=$1,$2;} /*Incrementer nb_arguments*/
 				;
 
-un_arg			: variable {$$=$1;}
+un_arg			: variable {$$=$1;} /*Incrementer nb_arguments*/
 				;
 
 condition		: SI PARENTHESE_OUVRANTE expressioncomp PARENTHESE_FERMANTE
@@ -177,7 +177,7 @@ variable		: vararithmetique {$$=$1;}
 element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$1[$3];} /*Comment indiquer l'element lui meme ?*/
 				;
 
-vararithmetique		: CSTE_ENTIERE {$$=$1;}
+vararithmetique		: CSTE_ENTIERE {$$=$1;} /*Renvoyer (noyau,num_lex,num decl)*/
 					| CSTE_REELE {$$=$1;}
 					;
 
@@ -185,16 +185,16 @@ varchar			: CSTE_CARACTERE {$$=$1;}
 				| CSTE_CHAINE {$$=$1}; /*Chaine n'est pas reconnu par la pile*/
 				;
 
-varlogique		: ET {$$=$1};
-				| OU {$$=$1};
+varlogique		: ET {$$=29};
+				| OU {$$=30};
 				;
 
-comparateur		: SUP {$$=$1};
-				| INF {$$=$1};
-				| SUPEGAL {$$=$1};
-				| INFEGAL {$$=$1};
-				| EGAL {$$=$1};
-				| DIFF {$$=$1};
+comparateur		: SUP {$$=5};
+				| INF {$$=6};
+				| SUPEGAL {$$=7};
+				| INFEGAL {$$=8};
+				| EGAL {$$=9};
+				| DIFF {$$=10};
 				;
 
 expression1		: expression1 PLUS expression1 {concat_pere_fils(creer_fils_frere(11,-1,-1),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
@@ -214,13 +214,13 @@ expression3		: variable {$$=$1;}
 expressionchar		: varchar PLUS varchar {concat_pere_fils(creer_fils_frere(11,-1,-1),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));} /*C'est une concatenation et non une addition*/
 					;
 
-expressioncomp		: vararithmetique comparateur vararithmetique {concat_pere_fils(creer_fils_frere(/*comparateur*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
-					| varchar comparateur varchar {concat_pere_fils(creer_fils_frere(/*comparateur*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
-					| BOOL varlogique BOOL {concat_pere_fils(creer_fils_frere(/*varlogique*/),concat_pere_frere(creer_fils_frere(26,?,?),creer_fils_frere(26,?,?)));}
-					| expressioncomp varlogique BOOL {concat_pere_fils(creer_fils_frere(/*varlogique*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(26,?,?)));}
-					| expressioncomp varlogique expressioncomp {concat_pere_fils(creer_fils_frere(/*varlogique*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
-					| variable comparateur VIDE {concat_pere_fils(creer_fils_frere(/*comparateur*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(31,-1,-1)));}
-					| variable comparateur variable {concat_pere_fils(creer_fils_frere(/*comparateur*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
+expressioncomp		: vararithmetique comparateur vararithmetique {concat_pere_fils(creer_fils_frere($2,-1,-1),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
+					| varchar comparateur varchar {concat_pere_fils(creer_fils_frere($2,-1,-1),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
+					| BOOL varlogique BOOL {concat_pere_fils(creer_fils_frere($2,-1,-1),concat_pere_frere(creer_fils_frere(26,?,?),creer_fils_frere(26,?,?)));}
+					| expressioncomp varlogique BOOL {concat_pere_fils(creer_fils_frere($2,-1,-1),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(26,?,?)));}
+					| expressioncomp varlogique expressioncomp {concat_pere_fils(creer_fils_frere($2,-1,-1),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
+					| variable comparateur VIDE {concat_pere_fils(creer_fils_frere($2,-1,-1),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(31,-1,-1)));}
+					| variable comparateur variable {concat_pere_fils(creer_fils_frere($2,-1,-1),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
 					;
 
 %%
