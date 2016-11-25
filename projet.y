@@ -72,7 +72,7 @@ liste_champs		: un_champ {$$=$1;} /*Appeler la variable globale case_vide apres 
 					| liste_champs PIPE un_champ /*On ne compte que un_champ, liste_champs est l'appel recursif*/
 					;
 
-un_champ		: IDF DEUX_POINTS nom_type /*On peut aussi compter les champs ici*/
+un_champ		: IDF DEUX_POINTS nom_type{incremente_nbchamps();} /*On peut aussi compter les champs ici*/
 				;
 
 nom_type		: type_simple {$$=$1;}
@@ -103,7 +103,7 @@ liste_param		: un_param {$$=$1;} /*Incrementer nb_parametres*/
 				| liste_param PIPE un_param /*Incrementer nb_parametres*/
 				;
 
-un_param		: IDF DEUX_POINTS type_simple ; /*Compter le nombre de parametres puis appeller case_vide*//*Incrementer nb_parametres*/
+un_param		: IDF DEUX_POINTS type_simple {incremente_nbparams}; /*Compter le nombre de parametres puis appeller case_vide*//*Incrementer nb_parametres*/
 
 instruction		: affectation POINT_VIRGULE {$$=$1;}
 				| condition POINT_VIRGULE {$$=$1;}
@@ -149,7 +149,7 @@ liste_args		: un_arg {$$=$1;} /*Incrementer nb_arguments*/
 				| liste_args VIRGULE un_arg {$$=$1,$2;} /*Incrementer nb_arguments*/
 				;
 
-un_arg			: variable {$$=$1;} /*Incrementer nb_arguments*/
+un_arg			: variable {$$=$1;incremente_nbarg();} /*Incrementer nb_arguments*/
 				;
 
 condition		: SI PARENTHESE_OUVRANTE expressioncomp PARENTHESE_FERMANTE
