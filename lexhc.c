@@ -54,7 +54,7 @@ void init_tab_lex(){
     for(i=4;i<TAILLE_LEXICO;i++){
         tableLexico[i].indice_n_lex=i; /*On continue à compter les indices*/
         tableLexico[i].longueur=-1; /*On initialise longueur à -1*/
-        tableLexico[i].lexeme=""; /*On initialise lexeme à chaine vide*/
+        strcpy(tableLexico[i].lexeme,""); /*On initialise lexeme à chaine vide*/
         tableLexico[i].suivant=-1; /*On initialise suivant à -1*/
     }
 }
