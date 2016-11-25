@@ -1,11 +1,13 @@
-
+#include "table_rep.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #define TAILLE_MAX 5000
 #define TAILLE_DIMENSIONS 5
+
 int  tabbornes[TAILLE_DIMENSIONS*2]=malloc((TAILLE_DIMENSIONS*2)*sizeof(int));
 int * tab_rep[TAILLE_MAX]; // declaration table representation
+
 
 void init_tab_rep(){       //intialisation de la table de rep
 for(int i=0;i<tab_rep.length;i++)
@@ -16,7 +18,7 @@ tab_rep[i]=-1;
 
 /*la fonction d'insertion ds la table de rep*/
 // on met la case vide de tab_rep dans i
-int insertstruct_tabrep(){
+int insertstruct_tabrep(int i/*récupéré du champ description*/){
 int i=case_vide(tab_rep);
 
 int nature;
@@ -66,10 +68,12 @@ tab_rep[i]=p;break;
 
 /*fonction qui renvoie la case vide dans une table*/
 int case_vide(int [] tab){
-for(int i=0;i<tab.length;i++){
-if(tab[i]==-1)
-return i;
+int i=0;
+while(tab[i]!=-1 && i<tab.length){
+i++;
+
 }
+return i;
 }//fin case_vide
 
 
@@ -224,3 +228,17 @@ tab_rep[i]=4;
 }
 }//fin insertfct
 
+
+/*fonction qui renvoi l'element de la table de rep à la case de numero "num" */
+
+int case_element(int num){
+
+if(num>=0){
+
+return tab_rep[num];
+
+}
+else
+return -1;
+
+}
