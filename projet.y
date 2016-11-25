@@ -1,6 +1,6 @@
 %{
-  #include <stdio.h>
-  #include <string.h>
+  #include "include.h"
+  #include "arbre.h"
   extern int yylex() ;
   extern int yyerror() ;
   extern int nb_lignes ;
@@ -89,10 +89,10 @@ type_simple		: ENTIER {$$=$1;}
 declaration_variable	: VARIABLE IDF DEUX_POINTS nom_type {inserer_declaration_variable(int num_decl);} /*num_decl vient de l'association des noms*/
 						;
 
-declaration_procedure	: PROCEDURE IDF liste_parametres corps /*Incrementer num region et NIS*//*Creer nouveau arbre*/{inserer_declaration_procedure(int num_decl);} /*num_decl vient de l'association des noms*//*Ajouter une variable globale nouvelle case libre*/
+declaration_procedure	: PROCEDURE IDF liste_parametres corps /*Incrementer num region et NIS*/{creer_fils_frere(19,?,?);inserer_declaration_procedure(int num_decl);} /*num_decl vient de l'association des noms*//*Ajouter une variable globale nouvelle case libre*/
 						;
 
-declaration_fonction	: FONCTION IDF liste_parametres RETOURNE type_simple corps /*Incrementer num region et NIS*//*Creer nouveau arbre*/{inserer_declaration_fonction(int num_decl);} /*num_decl vient de l'association des noms*//*Ajouter une variable globale nouvelle case libre*/
+declaration_fonction	: FONCTION IDF liste_parametres RETOURNE type_simple corps /*Incrementer num region et NIS*/{creer_fils_frere(20,?,?);inserer_declaration_fonction(int num_decl);} /*num_decl vient de l'association des noms*//*Ajouter une variable globale nouvelle case libre*/
 						;
 
 liste_parametres	: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE {$$=NULL;}/*Est-ce possible?*/
@@ -174,7 +174,7 @@ variable		: vararithmetique {$$=$1;}
 				| appel {$$=$1;}
 				;
 					  
-element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$1[$3];} /*Comment indiquer l'element lui meme*/
+element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$1[$3];} /*Comment indiquer l'element lui meme ?*/
 				;
 
 vararithmetique		: CSTE_ENTIERE {$$=$1;}
@@ -214,13 +214,13 @@ expression3		: variable {$$=$1;}
 expressionchar		: varchar PLUS varchar {concat_pere_fils(creer_fils_frere(11,-1,-1),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));} /*C'est une concatenation et non une addition*/
 					;
 
-expressioncomp		: vararithmetique comparateur vararithmetique {$$=$1 $2 $3;} /*creer arbre comparaison*/
-					| varchar comparateur varchar {$$=$1 $2 $3;}
-					| BOOL varlogique BOOL {$$=$1 $2 $3;}
-					| expressioncomp varlogique BOOL {$$=$1 $2 $3;}
-					| expressioncomp varlogique expressioncomp {$$=$1 $2 $3;}
-					| variable comparateur VIDE {$$=$1 $2 $3;}
-					| variable comparateur variable {$$=$1 $2 $3;}
+expressioncomp		: vararithmetique comparateur vararithmetique {concat_pere_fils(creer_fils_frere(/*comparateur*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
+					| varchar comparateur varchar {concat_pere_fils(creer_fils_frere(/*comparateur*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
+					| BOOL varlogique BOOL {concat_pere_fils(creer_fils_frere(/*varlogique*/),concat_pere_frere(creer_fils_frere(26,?,?),creer_fils_frere(26,?,?)));}
+					| expressioncomp varlogique BOOL {concat_pere_fils(creer_fils_frere(/*varlogique*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(26,?,?)));}
+					| expressioncomp varlogique expressioncomp {concat_pere_fils(creer_fils_frere(/*varlogique*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
+					| variable comparateur VIDE {concat_pere_fils(creer_fils_frere(/*comparateur*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(31,-1,-1)));}
+					| variable comparateur variable {concat_pere_fils(creer_fils_frere(/*comparateur*/),concat_pere_frere(creer_fils_frere(/*var1*/),creer_fils_frere(/*var2*/)));}
 					;
 
 %%

@@ -8,7 +8,7 @@ void init_tab_region() {
   for (i=0 ; i<=MAX_REGION ; i++) {
       tabRegion[i].taille = 0;
       tabRegion[i].niveau_imbrication = -1;
-	  tabRegion[i].arbre = NULL;
+	  tabRegion[i].arbre = creer_arbre_vide();
   }
 }
 
@@ -47,11 +47,11 @@ int decrementer_NIS(int NIS) {
 }
 
 int calculer_taille(int X) { /*X sera a modifier cf region.h*/
-  if(X==0 || X==1 || X==2 || X==3)
+  if((X==0)||(X==1)||(X==2)||(X==3)) /*X représente le num lexicographique*/
 	{
 		return 1;
 	}
-  else if(element.nature == 3)
+  else if(X.nature == 3)
 	{
 		int Y = /*Fonction de recuperation du contenu de la case X dans la table de representation*/
 		calculer_taille(Y);
@@ -59,3 +59,5 @@ int calculer_taille(int X) { /*X sera a modifier cf region.h*/
   else 
 	{
 		/*Cas complexe des fonctions, procedures, tableaux, structures ou la fonction doit etre appellee recursivement sur chaque element de l'objet*/
+	}
+}
