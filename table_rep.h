@@ -9,11 +9,10 @@ int * tab_rep[TAILLE_MAX]; // declaration table representation
 
 
 void init_tab_rep();       //intialisation de la table de rep
-
-int insertstruct_tabrep(int i/*récupéré du champ description*/);
-/*fonction qui renvoie la case vide dans une table*/
+int insertnbchamps(int nb_champs);
+void insertchampstruct(char* idf,char *type);
 int case_vide(int [] tab);
-/*fonction qui stocke les bornes du tableau*/
-int bornes_tab(int borne1,int borne2);
-void inserttab_tabrep();//insertion de tableau dans la table rep
-void insertproc();//insertion de procedure
+int * bornes_tab(int borne1,int borne2);
+void inserttypetab(char *type);
+void insertnbdimensions(int nb_dimensions);
+void insertbornes( int *tabbornes);

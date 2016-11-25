@@ -1,11 +1,11 @@
 #include "declaration.h"
-
+#include"lexhc.h"
 //TabDecla tabDecla[DECLARATION_MAX];
 int debut_decla = 4;                        //comme pour la table lexico, les 4 premiers sont dédiés aux types de base
-int numRegion = 1; /*Defini dans le .y*/
+
 int debordement = DEBUT_DEBORDEMENT;
 int tab_representation[MAX];
-int numrep=0;
+
 
 int taille_struct(){
     return 0;
@@ -26,7 +26,7 @@ void init_tab_decla()
         tabDecla[i].suivant = -1;
         tabDecla[i].region = 0;
         tabDecla[i].description = -1;
-        tabDecla[i].execution = 0;
+      //  tabDecla[i].execution = 0;
         //pour les types : entier, réel, booléen, char
     }
     for(i=4 ; i<=DECLARATION_MAX ; i++)
@@ -35,185 +35,258 @@ void init_tab_decla()
         tabDecla[i].suivant = -1;
         tabDecla[i].region = -1;
         tabDecla[i].description = -1;
-        tabDecla[i].execution = -1;
+      //  tabDecla[i].execution = -1;
     }
 }
 
-int ajouter_struct(int n_lexico)
-{
-    if(debut_decla >= DEBUT_DEBORDEMENT)
-    {
-        printf("Erreur, la limite mémoire a été atteinte !\n");
-        return (-1);
-    }
 
-    if(tabDecla[n_lexico].nature == -1)
-    {
-        tabDecla[n_lexico].nature = TYPE_STRUCT;
-        tabDecla[n_lexico].suivant = -1;
-        tabDecla[n_lexico].region = numRegion;
-        tabDecla[n_lexico].description = numrep;
-        //tabDecla[n_lexico].execution =
-        //Correspond au premier numero de la pile lie a la fonction
-        debut_decla++;
-    }
-    else
-    {
-        while(tabDecla[n_lexico].suivant != -1)
-            n_lexico = tabDecla[n_lexico].suivant;
+int casevide_debordement(structDecla tab []){
+    int trouv = 0,i=debordement;
+    while ((i<=DECLARATION_MAX) &&( trouv!=1)){
+           if (tab[i].nature==-1){
+                trouv=1;
 
-        tabDecla[n_lexico].suivant = debordement;
-        tabDecla[debordement].nature = TYPE_STRUCT;
-        tabDecla[debordement].suivant = -1;
-        tabDecla[debordement].region = numRegion;
-        tabDecla[debordement].description = numrep;
-        //tabDecla[debordement].execution =
-        debordement++;
-    }
-
-    // en profiter ici pour faire le lien entre la table de représentation et la pile de représentation
-    return 0;
+              }
+              else {i++;}
+           }
+ if (trouv==1){return i;}
+ else { return -1;}
 }
 
-int ajouter_tab(int n_lexico, int n_description) /*Il faut numRegion en parametres*/
+void ajouter_struct(int numdecl,int numRegion,int numdescription)
 {
-    if(debut_decla >= DEBUT_DEBORDEMENT)
-    {
-        printf("Erreur, la limite mémoire a été atteinte !\n");
-        exit(-1);
-    }
 
-    if(tabDecla[n_lexico].nature == -1)
+    if(tabDecla[numdecl].nature == -1)
     {
-        tabDecla[n_lexico].nature = TYPE_TAB;
-        tabDecla[n_lexico].suivant = -1;
-        tabDecla[n_lexico].region = numRegion;
-        tabDecla[n_lexico].description = numrep;
-        //tabDecla[n_lexico].execution =
+        tabDecla[numdecl].nature = TYPE_STRUCT;
+        tabDecla[numdecl].suivant = -1;
+        tabDecla[numdecl].region = numRegion;
+        tabDecla[numdecl].description = numdescription;
+
+
     }
     else
     {
-        while(tabDecla[n_lexico].suivant != -1)
-            n_lexico = tabDecla[n_lexico].suivant;
+        if (tabDecla[numdecl].suivant==-1){
+            int deb=casevide_debordement(tabDecla);
+         tabDecla[numdecl].suivant=deb;
+        tabDecla[deb].nature = TYPE_STRUCT;
+        tabDecla[deb].suivant = -1;
+        tabDecla[deb].region = numRegion;
+        tabDecla[deb].description = numdescription;
+        }
+        else {
+            int i = tabDecla[numdecl].suivant; int fin =0;
+            while (fin!=1){
+                if (tabDecla[i].suivant==-1){
+                    int deb =casevide_debordement(tabDecla);
+                    tabDecla[i].suivant=deb;
+                    tabDecla[deb].nature = TYPE_STRUCT;
+                    tabDecla[deb].suivant = -1;
+                    tabDecla[deb].region = numRegion;
+                    tabDecla[deb].description = numdescription;
+                    fin=1;
 
-        tabDecla[n_lexico].suivant = debordement;
-        tabDecla[debordement].nature = TYPE_BASE;
-        tabDecla[debordement].suivant = -1;
-        tabDecla[debordement].region = numRegion;
-        tabDecla[debordement].description = numrep;
-        //tabDecla[debordement].execution =
-        debordement++;
+                }
+                else {
+                    i = tabDecla[i].suivant;
+                }
+            }
+        }
     }
 
-    //idem, comme pour ajouter_struct, faire le lien entre la pile de représentations et sa table
-
-    return 0;
 }
 
-int ajouter_var(int n_lexico, int n_description)
+void ajouter_tab(int numdecl,int numRegion,int numdescription)
 {
-    if(debut_decla >= DEBUT_DEBORDEMENT)
+      if(tabDecla[numdecl].nature == -1)
     {
-        printf("Erreur, la limite mémoire a été atteinte !\n");
-        return (-1);
-    }
+        tabDecla[numdecl].nature = TYPE_TAB;
+        tabDecla[numdecl].suivant = -1;
+        tabDecla[numdecl].region = numRegion;
+        tabDecla[numdecl].description = numdescription;
 
-    if(tabDecla[n_lexico].nature == -1)
-    {
-        tabDecla[n_lexico].nature = TYPE_VAR;
-        tabDecla[n_lexico].suivant = -1; /*suivant n'est jamais à autre chose que -1*/
-        //tabDecla[n_lexico].region =
-        //créer une fonction qui retourne la région dans laquelle se trouve la var
-        tabDecla[n_lexico].description = n_description;
-        //tabDecla[n_lexico].execution =
-        debut_decla++;
+
     }
     else
     {
-        while(tabDecla[n_lexico].suivant != -1)
-            n_lexico = tabDecla[n_lexico].suivant;
+        if (tabDecla[numdecl].suivant==-1){
+            int deb=casevide_debordement(tabDecla);
+         tabDecla[numdecl].suivant=deb;
+        tabDecla[deb].nature = TYPE_TAB;
+        tabDecla[deb].suivant = -1;
+        tabDecla[deb].region = numRegion;
+        tabDecla[deb].description = numdescription;
+        }
+        else {
+            int i = tabDecla[numdecl].suivant; int fin =0;
+            while (fin!=1){
+                if (tabDecla[i].suivant==-1){
+                    int deb =casevide_debordement(tabDecla);
+                    tabDecla[i].suivant=deb;
+                    tabDecla[deb].nature = TYPE_TAB;
+                    tabDecla[deb].suivant = -1;
+                    tabDecla[deb].region = numRegion;
+                    tabDecla[deb].description = numdescription;
+                    fin=1;
 
-        tabDecla[n_lexico].suivant = debordement;
-        tabDecla[debordement].nature = TYPE_VAR;
-        tabDecla[debordement].suivant = -1;
-        //tabDecla[debordement].region =
-        tabDecla[debordement].description = n_description;
-        //tabDecla[debordement].execution =
-        debordement++;
+                }
+                else {
+                    i = tabDecla[i].suivant;
+                }
+            }
+        }
     }
-        return 0;
+
+
 }
 
-int ajouter_proc(int numLexico)
+void ajouter_var(int numdecl,int numRegion,char *type)
 {
-    if(debut_decla >= DEBUT_DEBORDEMENT)
-    {
-        printf("Erreur, la limite mémoire a été atteinte !\n");
-        return (-1);
+    int desc; int i =0, trouv =0;
+    while ((i<TAILLE_LEXICO) && (trouv!=1)){
+        if (tableLexico[i].lexeme==type){
+            desc=i;
+            trouv=1;
+        }
+        i++;
     }
 
-    if(tabDecla[numLexico].nature == -1)
+
+    if(tabDecla[numdecl].nature == -1)
     {
-        tabDecla[numLexico].nature = TYPE_PROC;
-        tabDecla[numLexico].suivant = -1;
-        //tabDecla[numLexico].region =
-        tabDecla[numLexico].description = numrep;
-        //tabDecla[numLexico].execution =
-        debut_decla++;
+        tabDecla[numdecl].nature = TYPE_VAR;
+        tabDecla[numdecl].suivant = -1;
+        tabDecla[numdecl].region = numRegion;
+        tabDecla[numdecl].description=desc;
+
     }
     else
     {
-        while(tabDecla[numLexico].suivant != -1)
-            numLexico = tabDecla[numLexico].suivant;
+        if (tabDecla[numdecl].suivant==-1){
+            int deb=casevide_debordement(tabDecla);
+         tabDecla[numdecl].suivant=deb;
+        tabDecla[deb].nature = TYPE_VAR;
+        tabDecla[deb].suivant = -1;
+        tabDecla[deb].region = numRegion;
+         tabDecla[deb].description=desc;
 
-        tabDecla[numLexico].suivant = debordement;
-        tabDecla[debordement].nature = TYPE_PROC;
-        tabDecla[debordement].suivant = -1;
-        //tabDecla[debordement].region =
-        tabDecla[debordement].description = numrep;
-        //tabDecla[debordement].execution =
-        debordement++;
+        }
+        else {
+            int i = tabDecla[numdecl].suivant; int fin =0;
+            while (fin!=1){
+                if (tabDecla[i].suivant==-1){
+                    int deb =casevide_debordement(tabDecla);
+                    tabDecla[i].suivant=deb;
+                    tabDecla[deb].nature = TYPE_VAR;
+                    tabDecla[deb].suivant = -1;
+                    tabDecla[deb].region = numRegion;
+                    tabDecla[deb].description=desc;
+                    fin=1;
+
+                }
+                else {
+                    i = tabDecla[i].suivant;
+                }
+            }
+        }
     }
 
-    // Lien table et pile de représentation
 
-    return 0;
+
 }
 
-int ajouter_fct(int n_lexico)
+void ajouter_proc(int numdecl,int numRegion,int numdescription)
 {
-    if(debut_decla >= DEBUT_DEBORDEMENT)
-    {
-        printf("Erreur, la limite mémoire a été atteinte !\n");
-        return (-1);
-    }
 
-    if(tabDecla[n_lexico].nature == -1)
+    if(tabDecla[numdecl].nature == -1)
     {
-        tabDecla[n_lexico].nature = TYPE_FONCT;
-        tabDecla[n_lexico].suivant = -1;
-        //tabDecla[n_lexico].region =
-        tabDecla[n_lexico].description = numrep;
-        //tabDecla[n_lexico].execution =
-        debut_decla++;
+        tabDecla[numdecl].nature = TYPE_PROC;
+        tabDecla[numdecl].suivant = -1;
+        tabDecla[numdecl].region = numRegion;
+        tabDecla[numdecl].description = numdescription;
+
+
     }
     else
     {
-        while(tabDecla[n_lexico].suivant != -1)
-            n_lexico = tabDecla[n_lexico].suivant;
+        if (tabDecla[numdecl].suivant==-1){
+            int deb=casevide_debordement(tabDecla);
+         tabDecla[numdecl].suivant=deb;
+        tabDecla[deb].nature = TYPE_PROC;
+        tabDecla[deb].suivant = -1;
+        tabDecla[deb].region = numRegion;
+        tabDecla[deb].description = numdescription;
+        }
+        else {
+            int i = tabDecla[numdecl].suivant; int fin =0;
+            while (fin!=1){
+                if (tabDecla[i].suivant==-1){
+                    int deb =casevide_debordement(tabDecla);
+                    tabDecla[i].suivant=deb;
+                    tabDecla[deb].nature = TYPE_PROC;
+                    tabDecla[deb].suivant = -1;
+                    tabDecla[deb].region = numRegion;
+                    tabDecla[deb].description = numdescription;
+                    fin=1;
 
-        tabDecla[n_lexico].suivant = debordement;
-        tabDecla[debordement].nature = TYPE_FONCT;
-        tabDecla[debordement].suivant = -1;
-        //tabDecla[debordement].region =
-        tabDecla[debordement].description = numrep;
-        //tabDecla[debordement].execution =
-        debordement++;
+                }
+                else {
+                    i = tabDecla[i].suivant;
+                }
+            }
+        }
     }
 
-    // Lien table et pile de représentation
 
-    return 0;
+
+}
+
+
+
+void ajouter_fct(int numdecl,int numRegion,int numdescription)
+{
+    if(tabDecla[numdecl].nature == -1)
+    {
+        tabDecla[numdecl].nature = TYPE_FONCT;
+        tabDecla[numdecl].suivant = -1;
+        tabDecla[numdecl].region = numRegion;
+        tabDecla[numdecl].description = numdescription;
+
+
+    }
+    else
+    {
+        if (tabDecla[numdecl].suivant==-1){
+            int deb=casevide_debordement(tabDecla);
+         tabDecla[numdecl].suivant=deb;
+        tabDecla[deb].nature = TYPE_FONCT;
+        tabDecla[deb].suivant = -1;
+        tabDecla[deb].region = numRegion;
+        tabDecla[deb].description = numdescription;
+        }
+        else {
+            int i = tabDecla[numdecl].suivant; int fin =0;
+            while (fin!=1){
+                if (tabDecla[i].suivant==-1){
+                    int deb =casevide_debordement(tabDecla);
+                    tabDecla[i].suivant=deb;
+                    tabDecla[deb].nature = TYPE_FONCT;
+                    tabDecla[deb].suivant = -1;
+                    tabDecla[deb].region = numRegion;
+                    tabDecla[deb].description = numdescription;
+                    fin=1;
+
+                }
+                else {
+                    i = tabDecla[i].suivant;
+                }
+            }
+        }
+    }
+
+
+
 }
 
 
@@ -247,10 +320,10 @@ void affiche_tab_decla(structDecla tab[])
         }
 }
 
-void afficher_tab_rep(){
+/*void afficher_tab_rep(){
     int i;
     printf("\n Table des déclarations \n");
     for (i = 0 ; i<numrep ; i++)
         printf(" %d", tab_representation[i]);
     printf("\n");
-}
+}*/

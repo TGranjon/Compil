@@ -9,7 +9,7 @@ cellule creer_arbre_vide()
   cellule cel;
   cel.noyau = -1;
   cel.lexeme = -1;
-  cel.declaration = -1;
+  //cel.declaration = -1;
   cel.fils = NULL;
   cel.frere = NULL;
   return cel;
@@ -30,7 +30,7 @@ cellule creer_fils_frere(int noy, int lex, int decl)
   cellule cel = creer_arbre_vide();
   cel.noyau=noy;
   cel.lexeme=lex;
-  cel.declaration=decl;
+  //cel.declaration=decl;
   return cel;
 }
 
@@ -50,19 +50,19 @@ int est_vide(cellule * cel)
 char * lire_arbre(cellule * racine)
 {
     char * texte;
-    if(3<=racine->noyau<=14 || 29<=racine->noyau<=30)
+    if(racine->noyau==268 || 272<=racine->noyau<=278 || 308<=racine->noyau<=311 || 312<=racine->noyau<=313)
     {
-  sprintf(texte,"%d",racine->declaration);
+  sprintf(texte,"%d",racine->/*declaration*/lexeme);
       return strcat(lire_arbre(racine->fils),strcat(texte,lire_arbre(racine->fils->frere))); /*Cas de lecture complexe (info contenue dans les fils et les petits freres)*/
     }
-    if(15<=racine->noyau<=18 || 26<=racine->noyau<=28 || racine->noyau==31 || 34<=racine->noyau<=36)
+    if(288<=racine->noyau<=292 || racine->noyau==281 || 304<=racine->noyau<=307 || racine->noyau==302) /*Si c'est une constante, sa valeur est stockée dans lexeme*/
     {
-  sprintf(texte,"%d",racine->declaration);
+  sprintf(texte,"%d",racine->/*declaration*/lexeme);
       return texte; /*Cas de lecture unique*/
     }
-    if(1<=racine->noyau<=2 || 19<=racine->noyau<=20 || 21<=racine->noyau<=25 || 32<=racine->noyau<=33)
+    if(260<=racine->noyau<=261 || 284<=racine->noyau<=286 || racine->noyau==293 || racine->noyau==296 300<=racine->noyau<=301 || 314<=racine->noyau<=315)
     {
-  sprintf(texte,"%d",racine->declaration);
+  sprintf(texte,"%d",racine->/*declaration*/lexeme);
       return strcat(texte,lire_arbre(racine->fils)); /*Cas de lecture en ligne (info contenue uniquement dans les fils)*/
     }
     fprintf(stderr,"Erreur, noyau non reconnu\n");
@@ -70,7 +70,7 @@ char * lire_arbre(cellule * racine)
 
 void lire_cellule(cellule * racine) /*Affiche le contenu d'une cellule (pour des tests)*/
 {
-  fprintf(stdout,"Noyau = %d\nLexeme = %d\nDeclaration = %d\n",racine->noyau,racine->lexeme,racine->declaration);
+  fprintf(stdout,"Noyau = %d\nLexeme = %d\n"/*Declaration = %d\n"*/,racine->noyau,racine->lexeme/*,racine->declaration*/);
   if(racine->fils==NULL)
   {
     fprintf(stdout,"Pas de fils\n");

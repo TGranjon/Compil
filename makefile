@@ -8,7 +8,6 @@ tout :
 	make region.o
 	make projet
 
-
 y.tab.c : projet.y
 	yacc -d -v projet.y
 
@@ -32,6 +31,11 @@ region.o : region.c region.h
 
 projet : lex.yy.o y.tab.c
 	gcc -o projet lex.yy.o y.tab.c -ly -ll
+
+analyse :
+	make y.tab.c
+	make lex.yy.c
+	make lex.yy.o
 
 
 propre :
