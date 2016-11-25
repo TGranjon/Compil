@@ -28,17 +28,18 @@ structDecla tabDecla[DECLARATION_MAX];
 
 void init_tab_decla();                             //procédure : initialisation du tableau des déclarations (4 premières lignes -> types primitifs)
 
-int ajouter_struct(int n_lexico);                  //fonction : ajout d'un élément de type struct dans le tableau des déclarations
+int casevide_debordement(structDecla tab []);
+void ajouter_struct(int numdecl,int numRegion,int numdescription) ;                //fonction : ajout d'un élément de type struct dans le tableau des déclarations
 
-int ajouter_tab(int n_lexico,int n_description);   //fonction : ajout d'un élément de type tableau dans le tableau des déclarations
+void ajouter_tab(int numdecl,int numRegion,int numdescription) ;  //fonction : ajout d'un élément de type tableau dans le tableau des déclarations
 
-int ajouter_var(int n_lexico, int n_description);  //fonction : ajout d'un élément de type variable dans le tableau des déclarations
+void ajouter_var(int numdecl,int numRegion,char * type) ; //fonction : ajout d'un élément de type variable dans le tableau des déclarations
 
-int ajouter_proc(int n_lexico);                    //fonction : ajout d'un élément de type procédure dans le tableau des déclarations
+void ajouter_proc(int numdecl,int numRegion,int numdescription)  ;                  //fonction : ajout d'un élément de type procédure dans le tableau des déclarations
 
-int ajouter_fct(int n_lexico);                     //fonction : ajout d'un élément de type fonction dans le tableau des déclarations
+void ajouter_fct(int numdecl,int numRegion,int numdescription);                    //fonction : ajout d'un élément de type fonction dans le tableau des déclarations
 
-void affiche_tab_decla(structDecla tab[]);         //procédure : affichage du tableau des déclarations
+//void affiche_tab_decla(structDecla tab[]);         //procédure : affichage du tableau des déclarations
 
 
 #endif

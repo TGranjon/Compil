@@ -6,11 +6,11 @@ int nb_lignes=1;
 %%
 "/"[\*](([^\"\*])|([\*]*[\"][^\"]*[\"])|([\*]+[^\*\/\"]))*[\*]+"/"	/* Commentaire sur plusieurs lignes */
 "//".*$ 								/* Commentaire sur une ligne. */
-"pg"[0-9 a-z A-Z]+				{return PROG;}
-"sortie"						{return FPROG;}
-"tab"[0-9 a-z A-Z]+				{return TABLEAU;}
-"struct"[0-9 a-z A-Z]+			{return STRUCT;}
-"fstruct"						{return FSTRUCT;}
+"pg"[0-9 a-z A-Z]+				{yylval.chaine=yytext;return PROG;}
+"sortie"						{yylval.chaine=yytext;return FPROG;}
+"tab"[0-9 a-z A-Z]+				{yylval.chaine=yytext;return TABLEAU;}
+"struct"[0-9 a-z A-Z]+			{yylval.chaine=yytext;return STRUCT;}
+"fstruct"						{yylval.chaine=yytext;return FSTRUCT;}
 
 \; 								{return POINT_VIRGULE;}
 \: 								{return DEUX_POINTS;}
@@ -38,14 +38,14 @@ int nb_lignes=1;
 \%chaine						{return POURCENT_CHAINE;}
 \%caractere						{return POURCENT_CARACTERE;}
 
-"entier" 						{return ENTIER;}
-"reel" 							{return REEL;}
-"booleen"						{return BOOLEEN;}
-"caractere"						{return CARACTERE;}
-"chaine"						{return CHAINE;}
-"var" 							{return VARIABLE;}
-"proc" 							{return PROCEDURE;}
-"fct" 							{return FONCTION;}
+"entier" 						{yylval.chaine=yytext;return ENTIER;}
+"reel" 							{yylval.chaine=yytext;return REEL;}
+"booleen"						{yylval.chaine=yytext;return BOOLEEN;}
+"caractere"						{yylval.chaine=yytext;return CARACTERE;}
+"chaine"						{yylval.chaine=yytext;return CHAINE;}
+"var" 							{yylval.chaine=yytext;return VARIABLE;}
+"proc" 							{yylval.chaine=yytext;return PROCEDURE;}
+"fct" 							{yylval.chaine=yytext;return FONCTION;}
 	
 "retourne"						{return RETOURNE;}
 "si" 							{return SI;}
@@ -68,9 +68,9 @@ int nb_lignes=1;
 "lire"							{return LIRE;}
 "ecrire"						{return ECRIRE;}
 
-\'[a-z A-Z]\' 					{yylval.caractere=yytext;return CSTE_CARACTERE;}
+\'[a-z A-Z]\' 					{yylval.caractere=yytext[0];return CSTE_CARACTERE;}
 \"[a-z A-Z]+\" 					{yylval.chaine=yytext;return CSTE_CHAINE;}
-[A-Z] 							{return IDF;}
+[A-Z] 							{yylval.caractere=yytext[0];return IDF;}
 
 \n 						   		{nb_lignes++;}
 %%

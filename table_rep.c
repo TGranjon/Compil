@@ -1,150 +1,138 @@
-
+#include "table_rep.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #define TAILLE_MAX 5000
 #define TAILLE_DIMENSIONS 5
-int  tabbornes[TAILLE_DIMENSIONS*2]=malloc((TAILLE_DIMENSIONS*2)*sizeof(int));
-int * tab_rep[TAILLE_MAX]; // declaration table representation
 
-void init_tab_rep(){       //intialisation de la table de rep
+
+int  tabbornes[TAILLE_DIMENSIONS*2]=malloc((TAILLE_DIMENSIONS*2)*sizeof(int));
+/**************************declaration table representation*****************************************/
+
+int * tab_rep[TAILLE_MAX];  
+/**************************intialisation de la table de rep*****************************************/
+void init_tab_rep(){      
 for(int i=0;i<tab_rep.length;i++)
 tab_rep[i]=-1;
 
-}//fin init_tab_rep
+}
 
 
-/*la fonction d'insertion ds la table de rep*/
-// on met la case vide de tab_rep dans i
-int insertstruct_tabrep(){
+/****************************insertion struct ds la table de rep***********************************/
+
+int insertnbchamps(int nb_champs){
+
+
 int i=case_vide(tab_rep);
+tab_rep[i]=nb_champs;
+}
+/*************************************** insertion champs****************************************/
+void insertchampstruct(char* idf,char *type){
+int i=0;
+while(stcmp(TableLexico[i].lexeme,idf)!=0){
 
-int nature;
-for(int j=0;j<=elt_tab_decl.length;j++){
-if(elt_tab_decl[j]==i){
-nature=elt_tab_decl[j].nature;
+i=i+1;
+}
+int j=case_vide(tab_rep);
+tab_rep[j]=i;
+j++;
+if(strcmp(type,"entier")==0)
+	tab_rep[j]=0;
+else if(strcmp(type,"reel")==1)
+tab_rep[j]=1;
+else if(strcmp(type,"bool")==2)
+tab_rep[j]=2;
+else if(strcmp(type,"caractere")==3)
+tab_rep[j]=3;
 
-}//fin if
-}//fin for
-if(nature==1){
-tab_rep[i]=nb_champs_struct;//nb champs à revoir
-i++;
-for(int j=0;j<nb_champs_struct;j++){
+else {
+i=0;
+while(stcmp(TableLexico[i].lexeme,type)!=0){
 
-for(int p=0;p<=499;p++){
-int resultat=strcmp(elt_tab_lexico[p].lexeme,IDF)
-if(resultat==0)  //cherche le num lexico du idf
-tab_rep[i]=p;break;
+i=i+1;
+}
+tab_rep[j]=i;
 
-}//fin for
-}//fin for
-i++;
-
-if(nom-type=="entier")
-tab_rep[i]=1;
-if(nom-type=="reel")
-tab_rep[i]=2;
-if(nom-type=="bool")
-tab_rep[i]=3;
-if(nom-type=="caractere")
-tab_rep[i]=4;
-
-
-else if (nom-type==IDF{//faux: à revoir
-for (int p=0;p<=499;p++){
-int resultat=strcmp(elt_tab_lexico[p].lexeme,IDF)
-if(resultat==0)
-tab_rep[i]=p;break;
-}//fin for
-}//fin if
+}
 
 
 
-}//fin insertstruct_tab
-
-
-
-/*fonction qui renvoie la case vide dans une table*/
+/*************************************** la case vide dans une table********************************/
 int case_vide(int [] tab){
-for(int i=0;i<tab.length;i++){
-if(tab[i]==-1)
+int i=0;
+while(tab[i]!=-1 && i<TAILLE_MAX){
+i++;
+
+}
 return i;
 }
-}//fin case_vide
 
 
-/* fonction sui récupere les bornes inf et sup d'un tableau */
-//le tableau tbbornes est initialisé à la valeur -1
-int bornes_tab(int borne1,int borne2){
+/* **********************les bornes inf et sup d'un tableau ****************************************/
+/******le tableau tbbornes est initialisé à la valeur -1//yacc: bornes_tab($1cste entiere,$3cste_entiere)************/
+int * bornes_tab(int borne1,int borne2){
 
-for(int i=0;i<tabbornes.length;i++){
+for(int i=0;i<TAILLE_DIMENSIONS*2;i++){
 	tabbornes[i]=-1;
- }
+ 	}
 int j=0;
 while(tabbornes[j]!=-1){
-	j++;
-}
+	j=j+1;
+	}
 tabbornes[j]=borne1;
 tabbornes[j+1]=borne2;
+
 return tabbornes;
-}//fin bornes_tab
-
-
-
-void inserttab_tabrep(){
-
-int i=case_vide(tab_rep);// cherche la position vide
-int nature;
-for(int j=0;j<=elt_tab_decl.length;j++){
-if(elt_tab_decl[j]==i){
-nature=elt_tab_decl[j].nature;
-
-}//fin if
-}//fin for
-
-if(nature==2){
-
-if(nom-type=="entier")
-tab_rep[i]=1;
-if(nom-type=="reel")
-tab_rep[i]=2;
-if(nom-type=="bool")
-tab_rep[i]=3;
-if(nom-type=="caractere")
-tab_rep[i]=4;
-
-else if (nom-type==IDF{//faux: à revoir
-for (int p=0;p<=499;p++){
-int resultat=strcmp(elt_tab_lexico[p].lexeme,IDF)
-if(resultat==0)
-tab_rep[i]=p;break;
-}
 }
 
-i++;
-/*nb de dimensions de tableaux à incrémenter dans le yacc*/
-tab_rep[i]=nb_dimensions;
-i++;
-/*insertion des bornes inf et sup */
 
-for(int j=0;j<=tabbornes.length;j++){
-tab_rep[i]=tabbornes[j];
-i++;
+/************************************* insertion du type d'un tableau ******************************/
+/*************************yacc:inserttypetab($1nomtype)*****************************/
+void inserttypetab(char *type){
+
+int i=0;
+int j=case_vide(tab_rep);
+if(strcmp(type,"entier")==0)
+	tab_rep[j]=0;
+else if(strcmp(type,"reel")==1)
+	tab_rep[j]=1;
+else if(strcmp(type,"bool")==2)
+	tab_rep[j]=2;
+else if(strcmp(type,"caractere")==3)
+	tab_rep[j]=3;
+
+else {
+	while(stcmp(TableLexico[i].lexeme,type)!=0){
+		i=i+1;
+	}
+	tab_rep[j]=i;
 }
 
 
 
+}
+/***************************************************************************************************/
+/*insertion nb de dinmensions d'un tableau*/
+void insertnbdimensions(int nb_dimensions){
+
+int j=case_vide(tab_rep);
+tab_rep[j]=nb_dimensions;
+
+}
+/*************************insertion des bornes inf et sup *****************************************/
+void insertbornes( int *tabbornes){
+
+int j=case_vide(tab_rep);
+for(int i=0;i<=TAILLE_DIMENSIONS*2;i++){
+	tab_rep[j]=tabbornes[i];
+	j++;
+	}
 
 
-}//fin for
-}//fin if
-}//fin if
-}//fin inserttab
-
-
-
-/*fonction d'insertion de procedure*/
+}
+/**********************************fonction d'insertion de procedure********************************/
 //nb params procedure à récuperer dans le yacc
+
 void insertproc(){
 
 int i=case_vide(tab_rep);
@@ -180,8 +168,8 @@ tab_rep[i]=4;
 
 }
 }//fin insertproc
-
-/*fonction d'insertion de fonction*/
+ 
+/************************************fonction d'insertion de fonction*******************************/
 // type_retour à récupérer dans le yacc
 //nb params fonction à récupoerer dans le yacc
 void insertfct(){
@@ -224,3 +212,39 @@ tab_rep[i]=4;
 }
 }//fin insertfct
 
+
+/******************** l'element de la table de rep à la case de numero "num" **********************/
+
+int case_element(int num){
+
+if(num>=0){
+
+	return tab_rep[num];
+}
+
+else
+	return -1;
+
+}
+/***************************************************************************************************/
+//incrementation de nb param
+int incremente_nbparam(){
+nb_parametres++;
+
+return nb_parametres;
+
+
+}
+//incrementation de nb champs
+int incremente_nbchamps(){
+nb_champs++;
+return nb_champs;
+
+}
+
+//incrementation de nb champs
+int incremente_nbarg(){
+nb_arguments++;
+return nb_arguments;
+
+}
