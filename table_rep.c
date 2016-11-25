@@ -7,7 +7,6 @@
 int  tabbornes[TAILLE_DIMENSIONS*2]=malloc((TAILLE_DIMENSIONS*2)*sizeof(int));
 int * tab_rep[TAILLE_MAX]; // declaration table representation
 
-
 void init_tab_rep(){       //intialisation de la table de rep
 for(int i=0;i<tab_rep.length;i++)
 tab_rep[i]=-1;
@@ -224,3 +223,4 @@ tab_rep[i]=4;
 
 }
 }//fin insertfct
+

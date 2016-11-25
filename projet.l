@@ -58,9 +58,9 @@ int nb_lignes=1;
 "pour"							{return POUR;}
 "jusqua"						{return JUSQUA;}
 
-"vrai"|"faux" 					{return BOOL;}
-0|[1-9][0-9]* 					{return CSTE_ENTIERE;}
-[1-9]*[0-9]\.[0-9]+ 			{return CSTE_REELE;}/*au moins un chiffre après le point*/
+"vrai"|"faux" 					{yylval.booleen=!strcmp(yytext,"vrai");return BOOL;}
+0|[1-9][0-9]* 					{yylval.entier=atoi(yytext);return CSTE_ENTIERE;}
+[1-9]*[0-9]\.[0-9]+ 			{yylval.reel=atof(yytext);return CSTE_REELE;} /*au moins un chiffre après le point*/
 "et" 							{return ET;}
 "ou" 							{return OU;}
 "vide"							{return VIDE;}
@@ -68,8 +68,8 @@ int nb_lignes=1;
 "lire"							{return LIRE;}
 "ecrire"						{return ECRIRE;}
 
-\'[a-z A-Z]\' 					{return CSTE_CARACTERE;}
-\"[a-z A-Z]+\" 					{return CSTE_CHAINE;}
+\'[a-z A-Z]\' 					{yylval.caractere=yytext;return CSTE_CARACTERE;}
+\"[a-z A-Z]+\" 					{yylval.chaine=yytext;return CSTE_CHAINE;}
 [A-Z] 							{return IDF;}
 
 \n 						   		{nb_lignes++;}

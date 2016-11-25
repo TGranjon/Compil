@@ -67,7 +67,6 @@ char * lire_arbre(cellule * racine)
     }
     fprintf(stderr,"Erreur, noyau non reconnu\n");
 }
-/*Il faut renvoyer (l'opérateur)? et les deux opérandes (num declaration ou valeur)*/
 
 void lire_cellule(cellule * racine) /*Affiche le contenu d'une cellule (pour des tests)*/
 {

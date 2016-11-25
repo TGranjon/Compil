@@ -27,6 +27,8 @@ int inserer_lexeme (char * lexeme);									//fonction : insertion du lexeme non
 
 char * lexeme (int num_lexico);										//fonction : retourne le lexeme associé à un numéro lexicographique donné
 
+int avoir_num_lexico (char * lexeme);								//fonction : retourne le numero lexicographique lié au lexeme donné (ou l'insere si il n'y est pas)
+
 void affiche_table_lexico(structLexico tab[], int n);				//procédure : affiche la table lexicographique
 void affiche_table_hash_code(int tab[]);							//procédure : affiche la table de hash code
 

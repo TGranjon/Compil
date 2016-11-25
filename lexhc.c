@@ -54,7 +54,7 @@ void init_tab_lex(){
     for(i=4;i<TAILLE_LEXICO;i++){
         tableLexico[i].indice_n_lex=i; /*On continue à compter les indices*/
         tableLexico[i].longueur=-1; /*On initialise longueur à -1*/
-        tableLexico[i].lexeme=""; /*On initialise lexeme à chaine vide*/
+        strcpy(tableLexico[i].lexeme,""); /*On initialise lexeme à chaine vide*/
         tableLexico[i].suivant=-1; /*On initialise suivant à -1*/
     }
 }
@@ -98,6 +98,24 @@ int inserer_lexeme (char * n_lexeme){
 
 char * lexeme (int num_lexico){
 	return tableLexico[num_lexico].lexeme;
+}
+
+int avoir_num_lexico (char * lexeme){
+	int num_hash_code = hash_code(lexeme);
+	int indice = tab_hash_code[num_hash_code];
+	int suivant;
+	if(strcmp(tableLexico[indice].lexeme,lexeme)==0){
+		return indice;
+	}
+	else{
+		suivant = tableLexico[indice].suivant;
+		while(suivant!=-1){
+			if(strcmp(tableLexico[suivant].lexeme,lexeme)==0){
+				return indice;
+			}
+		}
+		inserer_lexeme(lexeme);
+	}
 }
 
 
