@@ -1,19 +1,16 @@
 #include "table_rep.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #define TAILLE_MAX 5000
 #define TAILLE_DIMENSIONS 5
 
 
-int  tabbornes[TAILLE_DIMENSIONS*2]=malloc((TAILLE_DIMENSIONS*2)*sizeof(int));
+int tabbornes[TAILLE_DIMENSIONS*2];
 /**************************declaration table representation*****************************************/
 
-int * tab_rep[TAILLE_MAX];  
+int tab_rep[TAILLE_MAX];  
 /**************************intialisation de la table de rep*****************************************/
 void init_tab_rep(){      
-for(int i=0;i<tab_rep.length;i++)
-tab_rep[i]=-1;
+	for(int i=0;i<TAILLE_MAX;i++)
+		tab_rep[i]=-1;
 
 }
 
@@ -23,48 +20,49 @@ tab_rep[i]=-1;
 int insertnbchamps(int nb_champs){
 
 
-int i=case_vide(tab_rep);
-tab_rep[i]=nb_champs;
+	int i=case_vide(tab_rep);
+	tab_rep[i]=nb_champs;
 }
 /*************************************** insertion champs****************************************/
 void insertchampstruct(char* idf,char *type){
-int i=0;
-while(stcmp(TableLexico[i].lexeme,idf)!=0){
+	int i=0;
+	while(strcmp(tableLexico[i].lexeme,idf)!=0){
 
-i=i+1;
-}
-int j=case_vide(tab_rep);
-tab_rep[j]=i;
-j++;
-if(strcmp(type,"entier")==0)
-	tab_rep[j]=0;
-else if(strcmp(type,"reel")==1)
-tab_rep[j]=1;
-else if(strcmp(type,"bool")==2)
-tab_rep[j]=2;
-else if(strcmp(type,"caractere")==3)
-tab_rep[j]=3;
+		i=i+1;
+	}
+	int j=case_vide(tab_rep);
+	tab_rep[j]=i;
+	j++;
+	if(strcmp(type,"entier")==0)
+		tab_rep[j]=0;
+	else if(strcmp(type,"reel")==1)
+		tab_rep[j]=1;
+	else if(strcmp(type,"bool")==2)
+		tab_rep[j]=2;
+	else if(strcmp(type,"caractere")==3)
+		tab_rep[j]=3;
 
-else {
-i=0;
-while(stcmp(TableLexico[i].lexeme,type)!=0){
+	else {
+		i=0;
+		while(strcmp(tableLexico[i].lexeme,type)!=0){
 
-i=i+1;
-}
-tab_rep[j]=i;
+		i=i+1;
+		}
+		tab_rep[j]=i;
 
+	}
 }
 
 
 
 /*************************************** la case vide dans une table********************************/
-int case_vide(int [] tab){
-int i=0;
-while(tab[i]!=-1 && i<TAILLE_MAX){
-i++;
+int case_vide(int tab[]){
+	int i=0;
+	while(tab[i]!=-1 && i<TAILLE_MAX){
+	i++;
 
-}
-return i;
+	}
+	return i;
 }
 
 
@@ -72,17 +70,17 @@ return i;
 /******le tableau tbbornes est initialisé à la valeur -1//yacc: bornes_tab($1cste entiere,$3cste_entiere)************/
 int * bornes_tab(int borne1,int borne2){
 
-for(int i=0;i<TAILLE_DIMENSIONS*2;i++){
-	tabbornes[i]=-1;
- 	}
-int j=0;
-while(tabbornes[j]!=-1){
-	j=j+1;
+	for(int i=0;i<TAILLE_DIMENSIONS*2;i++){
+		tabbornes[i]=-1;
 	}
-tabbornes[j]=borne1;
-tabbornes[j+1]=borne2;
+	int j=0;
+	while(tabbornes[j]!=-1){
+		j=j+1;
+	}
+	tabbornes[j]=borne1;
+	tabbornes[j+1]=borne2;
 
-return tabbornes;
+	return tabbornes;
 }
 
 
@@ -90,23 +88,23 @@ return tabbornes;
 /*************************yacc:inserttypetab($1nomtype)*****************************/
 void inserttypetab(char *type){
 
-int i=0;
-int j=case_vide(tab_rep);
-if(strcmp(type,"entier")==0)
-	tab_rep[j]=0;
-else if(strcmp(type,"reel")==1)
-	tab_rep[j]=1;
-else if(strcmp(type,"bool")==2)
-	tab_rep[j]=2;
-else if(strcmp(type,"caractere")==3)
-	tab_rep[j]=3;
+	int i=0;
+	int j=case_vide(tab_rep);
+	if(strcmp(type,"entier")==0)
+		tab_rep[j]=0;
+	else if(strcmp(type,"reel")==1)
+		tab_rep[j]=1;
+	else if(strcmp(type,"bool")==2)
+		tab_rep[j]=2;
+	else if(strcmp(type,"caractere")==3)
+		tab_rep[j]=3;
 
-else {
-	while(stcmp(TableLexico[i].lexeme,type)!=0){
-		i=i+1;
+	else {
+		while(strcmp(tableLexico[i].lexeme,type)!=0){
+			i=i+1;
+		}
+		tab_rep[j]=i;
 	}
-	tab_rep[j]=i;
-}
 
 
 
@@ -115,17 +113,17 @@ else {
 /*insertion nb de dinmensions d'un tableau*/
 void insertnbdimensions(int nb_dimensions){
 
-int j=case_vide(tab_rep);
-tab_rep[j]=nb_dimensions;
+	int j=case_vide(tab_rep);
+	tab_rep[j]=nb_dimensions;
 
 }
 /*************************insertion des bornes inf et sup *****************************************/
 void insertbornes( int *tabbornes){
 
-int j=case_vide(tab_rep);
-for(int i=0;i<=TAILLE_DIMENSIONS*2;i++){
-	tab_rep[j]=tabbornes[i];
-	j++;
+	int j=case_vide(tab_rep);
+	for(int i=0;i<=TAILLE_DIMENSIONS*2;i++){
+		tab_rep[j]=tabbornes[i];
+		j++;
 	}
 
 
@@ -135,9 +133,9 @@ for(int i=0;i<=TAILLE_DIMENSIONS*2;i++){
 
 void insertnbparamproc(int nbparam){
 
-int j=case_vide(tab_rep);
+	int j=case_vide(tab_rep);
 
-tab_rep[j]=nbparam;
+	tab_rep[j]=nbparam;
 
 }
 
@@ -147,31 +145,31 @@ tab_rep[j]=nbparam;
  
 void insertparamproc(char *idf , char *type){
 
-int j=case_vide(tab_rep);
-int i=0;
-while(stcmp(TableLexico[i].lexeme,idf)!=0){
+	int j=case_vide(tab_rep);
+	int i=0;
+	while(strcmp(tableLexico[i].lexeme,idf)!=0){
 
-	i=i+1;
-	}
-
-tab_rep[j]=i;
-j++;
-
-if(strcmp(type,"entier")==0)
-	tab_rep[j]=0;
-else if(strcmp(type,"reel")==1)
-	tab_rep[j]=1;
-else if(strcmp(type,"bool")==2)
-	tab_rep[j]=2;
-else if(strcmp(type,"caractere")==3)
-	tab_rep[j]=3;
-
-else {
-	while(stcmp(TableLexico[i].lexeme,type)!=0){
 		i=i+1;
-	}
+		}
+
 	tab_rep[j]=i;
-}
+	j++;
+
+	if(strcmp(type,"entier")==0)
+		tab_rep[j]=0;
+	else if(strcmp(type,"reel")==1)
+		tab_rep[j]=1;
+	else if(strcmp(type,"bool")==2)
+		tab_rep[j]=2;
+	else if(strcmp(type,"caractere")==3)
+		tab_rep[j]=3;
+
+	else {
+		while(strcmp(tableLexico[i].lexeme,type)!=0){
+			i=i+1;
+		}
+		tab_rep[j]=i;
+	}
 
 
 
@@ -180,24 +178,25 @@ else {
 
 void inserttyperetour(char * type){
 
-int j=case_vide(tab_rep);
+	int i = 0;
+	int j=case_vide(tab_rep);
 
-if(strcmp(type,"entier")==0)
-	tab_rep[j]=0;
-else if(strcmp(type,"reel")==1)
-	tab_rep[j]=1;
-else if(strcmp(type,"bool")==2)
-	tab_rep[j]=2;
-else if(strcmp(type,"caractere")==3)
-	tab_rep[j]=3;
+	if(strcmp(type,"entier")==0)
+		tab_rep[j]=0;
+	else if(strcmp(type,"reel")==1)
+		tab_rep[j]=1;
+	else if(strcmp(type,"bool")==2)
+		tab_rep[j]=2;
+	else if(strcmp(type,"caractere")==3)
+		tab_rep[j]=3;
 
-else {
-	while(stcmp(TableLexico[i].lexeme,type)!=0){
-		i=i+1;
+	else {
+		while(strcmp(tableLexico[i].lexeme,type)!=0){
+			i=i+1;
+		}
+		tab_rep[j]=i;
 	}
-	tab_rep[j]=i;
-}
-
+	
 }
 
 
@@ -206,38 +205,38 @@ else {
 
 void insertnbparamfct(int nbparam){
 
-int j=case_vide(tab_rep);
-tab_rep[j]=nbparam;
+	int j=case_vide(tab_rep);
+	tab_rep[j]=nbparam;
 }
 
 /*******************fonction d'insertion des params d'une fonctions****************/
 
 void insertparamfct(char *idf,char* type){
-int j=case_vide(tab_rep);
-int i=0;
-while(stcmp(TableLexico[i].lexeme,idf)!=0){
+	int j=case_vide(tab_rep);
+	int i=0;
+	while(strcmp(tableLexico[i].lexeme,idf)!=0){
 
-	i=i+1;
-	}
-
-tab_rep[j]=i;
-j++;
-
-if(strcmp(type,"entier")==0)
-	tab_rep[j]=0;
-else if(strcmp(type,"reel")==1)
-	tab_rep[j]=1;
-else if(strcmp(type,"bool")==2)
-	tab_rep[j]=2;
-else if(strcmp(type,"caractere")==3)
-	tab_rep[j]=3;
-
-else {
-	while(stcmp(TableLexico[i].lexeme,type)!=0){
 		i=i+1;
 	}
+
 	tab_rep[j]=i;
-}
+	j++;
+
+	if(strcmp(type,"entier")==0)
+		tab_rep[j]=0;
+	else if(strcmp(type,"reel")==1)
+		tab_rep[j]=1;
+	else if(strcmp(type,"bool")==2)
+		tab_rep[j]=2;
+	else if(strcmp(type,"caractere")==3)
+		tab_rep[j]=3;
+
+	else {
+		while(strcmp(tableLexico[i].lexeme,type)!=0){
+			i=i+1;
+		}
+		tab_rep[j]=i;
+	}
 
 
 }
@@ -249,34 +248,12 @@ else {
 
 int case_element(int num){
 
-if(num>=0){
+	if(num>=0){
 
-	return tab_rep[num];
-}
+		return tab_rep[num];
+	}
 
-else
-	return -1;
-
-}
-/***************************************************************************************************/
-//incrementation de nb param
-int incremente_nbparam(){
-nb_parametres++;
-
-return nb_parametres;
-
-
-}
-//incrementation de nb champs
-int incremente_nbchamps(){
-nb_champs++;
-return nb_champs;
-
-}
-
-//incrementation de nb champs
-int incremente_nbarg(){
-nb_arguments++;
-return nb_arguments;
+	else
+		return -1;
 
 }

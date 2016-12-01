@@ -31,20 +31,6 @@ void affiche_tab_region(structRegion region[]) {
     printf(" %d\t| %d\t| %d\t|\n",i, region[i].taille, region[i].niveau_imbrication);
 }
 
-int incrementer_region(int region) {
-  region ++;
-  return region;
-}
-
-int incrementer_NIS(int NIS) {
-  NIS++;
-  return NIS;
-}
-
-int decrementer_NIS(int NIS) {
-  NIS--;
-  return NIS;
-}
 
 /*int calculer_taille(int X) { /*X sera a modifier cf region.h*/
 //  if((X==0)||(X==1)||(X==2)||(X==3)) /*X représente le num lexicographique*/

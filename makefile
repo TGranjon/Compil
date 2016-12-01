@@ -6,6 +6,8 @@ tout :
 	make declaration.o
 	make lexhc.o
 	make region.o
+	make Increment.o
+	make table_rep.o
 	make projet
 
 y.tab.c : projet.y
@@ -29,8 +31,14 @@ lexhc.o : lexhc.c lexhc.h
 region.o : region.c region.h
 	gcc -c region.c region.h
 
+Increment.o : Increment.c Increment.h
+	gcc -c Increment.c Increment.h
+
+table_rep.o : table_rep.c table_rep.h
+	gcc -c table_rep.c table_rep.h
+
 projet : lex.yy.o y.tab.c
-	gcc -o projet lex.yy.o y.tab.c -ly -ll
+	gcc -o projet lex.yy.o y.tab.c arbre.o declaration.o lexhc.o region.o Increment.o -ly -ll
 
 analyse :
 	make y.tab.c
@@ -39,4 +47,4 @@ analyse :
 
 
 propre :
-	rm lex.yy.c lex.yy.o y.output y.tab.c y.tab.h arbre.o arbre.h.gch declaration.o declaration.h.gch lexhc.o lexhc.h.gch region.o region.h.gch projet
+	rm lex.yy.c lex.yy.o y.output y.tab.c y.tab.h arbre.o arbre.h.gch declaration.o declaration.h.gch lexhc.o lexhc.h.gch region.o region.h.gch Increment.o Increment.h.gch table_rep.o table_rep.h.gch projet

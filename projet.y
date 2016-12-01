@@ -36,7 +36,7 @@
 	%token <entier> SI ALORS SINON TANT_QUE FAIRE DEBUT FIN POUR JUSQUA 
 
 	%token <entier> VIDE
-	%token <entier> BOOLEEN CSTE_ENTIERE CSTE_REELE CSTE_CHAINE CSTE_CARACTERE
+	%token <booleen> BOOLEEN <entier> CSTE_ENTIERE CSTE_REELE CSTE_CHAINE CSTE_CARACTERE
 	%token <entier> PLUS MOINS DIV MULT
 	%token <entier> ET OU
 	%token <entier> LIRE ECRIRE
@@ -46,7 +46,7 @@
 	%type <arbre> instruction format pour suite_ecriture liste_variables resultat_retourne appel liste_arguments liste_args un_arg 
 	%type <arbre> condition tant_que affectation variable vararithmetique varchar expression1 expression2 expression3 expressionchar expressioncomp element_tab
 	%type <entier> varlogique comparateur
-	%type <chaine> nom_type type_simple
+	%type <entier> nom_type type_simple
 %%
 programme		: PROG  corps FPROG {$$=concat_pere_fils(creer_fils_frere(0,-1),$2);} 
 				;
@@ -66,8 +66,8 @@ suite_liste_inst	: instruction {$$=$1;incrementer_nb_instructions(nb_instruction
 					| suite_liste_inst PIPE instruction {$$=concat_pere_frere($1,$3);incrementer_nb_instructions(nb_instructions);}
 					;
 
-declaration		: declaration_type POINT_VIRGULE {$$=creer_arbre_vide();} /*N'apparait pas dans l'arbre*/
-				| declaration_variable POINT_VIRGULE {$$=creer_arbre_vide();} /*N'apparait pas dans l'arbre*/
+declaration		: declaration_type POINT_VIRGULE {$$=creer_arbre_vide();}
+				| declaration_variable POINT_VIRGULE {$$=creer_arbre_vide();}
 				| declaration_procedure POINT_VIRGULE {$$=$1;}
 				| declaration_fonction POINT_VIRGULE {$$=$1;}
 				;
@@ -103,7 +103,7 @@ type_simple		: ENTIER {$$=$1;}
 				| REEL {$$=$1;}
 				| BOOLEEN {$$=$1;}
 				| CARACTERE {$$=$1;}
-				| CHAINE CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {} /*Recuperer le contenu de la chaine dans la table des representations*/
+				| CHAINE CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {} /*Recuperer le contenu de la chaine dans la table des representations et le renvoyer en temps qu'arbre*/
 				;
 
 declaration_variable	: VARIABLE IDF DEUX_POINTS nom_type {}
