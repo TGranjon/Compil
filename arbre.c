@@ -9,28 +9,28 @@ cellule creer_arbre_vide()
   cellule cel;
   cel.noyau = -1;
   cel.lexeme = -1;
-  //cel.declaration = -1;
   cel.fils = NULL;
   cel.frere = NULL;
   return cel;
 }
 
-void concat_pere_fils(cellule * pere, cellule * fils) /*Permet d'ajouter la cellule fils en tant que fils de la cellule pere*/
+cellule concat_pere_fils(cellule pere, cellule fils) /*Permet d'ajouter la cellule fils en tant que fils de la cellule pere*/
 {
-  pere->fils=fils;
+  pere.fils=&fils;
+  return pere;
 }
 
-void concat_pere_frere(cellule * pere, cellule * frere) /*Permet d'ajouter la cellule frere en tant que frere de la cellule pere*/
+cellule concat_pere_frere(cellule pere, cellule frere) /*Permet d'ajouter la cellule frere en tant que frere de la cellule pere*/
 {
-  pere->frere=frere;
+  pere.frere=&frere;
+  return pere;
 }
 
-cellule creer_fils_frere(int noy, int lex, int decl)
+cellule creer_fils_frere(int noy, int lex)
 {
   cellule cel = creer_arbre_vide();
   cel.noyau=noy;
   cel.lexeme=lex;
-  //cel.declaration=decl;
   return cel;
 }
 
@@ -50,19 +50,19 @@ int est_vide(cellule * cel)
 char * lire_arbre(cellule * racine)
 {
     char * texte;
-    if(racine->noyau==268 || 272<=racine->noyau<=278 || 308<=racine->noyau<=311 || 312<=racine->noyau<=313)
+    if(racine->noyau==268 || (272<=racine->noyau && racine->noyau<=278) || (308<=racine->noyau && racine->noyau<=311) || (312<=racine->noyau  & racine->noyau<=313))
     {
-  sprintf(texte,"%d",racine->/*declaration*/lexeme);
+  sprintf(texte,"%d",racine->lexeme);
       return strcat(lire_arbre(racine->fils),strcat(texte,lire_arbre(racine->fils->frere))); /*Cas de lecture complexe (info contenue dans les fils et les petits freres)*/
     }
-    if(288<=racine->noyau<=292 || racine->noyau==281 || 304<=racine->noyau<=307 || racine->noyau==302) /*Si c'est une constante, sa valeur est stockée dans lexeme*/
+    if((288<=racine->noyau && racine->noyau<=292) || racine->noyau==281 || (304<=racine->noyau && racine->noyau<=307) || racine->noyau==302) /*Si c'est une constante, sa valeur est stockée dans lexeme*/
     {
-  sprintf(texte,"%d",racine->/*declaration*/lexeme);
+  sprintf(texte,"%d",racine->lexeme);
       return texte; /*Cas de lecture unique*/
     }
-    if(260<=racine->noyau<=261 || 284<=racine->noyau<=286 || racine->noyau==293 || racine->noyau==296 300<=racine->noyau<=301 || 314<=racine->noyau<=315)
+    if((260<=racine->noyau && racine->noyau<=261) || (284<=racine->noyau && racine->noyau<=286) || racine->noyau==293 || racine->noyau==296 || (300<=racine->noyau && racine->noyau<=301) || (314<=racine->noyau && racine->noyau<=315))
     {
-  sprintf(texte,"%d",racine->/*declaration*/lexeme);
+  sprintf(texte,"%d",racine->lexeme);
       return strcat(texte,lire_arbre(racine->fils)); /*Cas de lecture en ligne (info contenue uniquement dans les fils)*/
     }
     fprintf(stderr,"Erreur, noyau non reconnu\n");
@@ -70,7 +70,7 @@ char * lire_arbre(cellule * racine)
 
 void lire_cellule(cellule * racine) /*Affiche le contenu d'une cellule (pour des tests)*/
 {
-  fprintf(stdout,"Noyau = %d\nLexeme = %d\n"/*Declaration = %d\n"*/,racine->noyau,racine->lexeme/*,racine->declaration*/);
+  fprintf(stdout,"Noyau = %d\nLexeme = %d\n",racine->noyau,racine->lexeme);
   if(racine->fils==NULL)
   {
     fprintf(stdout,"Pas de fils\n");

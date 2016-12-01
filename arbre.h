@@ -1,5 +1,4 @@
 #include "include.h"
-#include "y.tab.h"
 
 /*Déclaration de l'arbre abstrait*/
 
@@ -7,12 +6,11 @@ struct cellule
 {
   int noyau; /*Correspond aux codes ci-dessus*/
   int lexeme; /*Code lexicographique correspondant*/
-  //int declaration; /*Code correspondant a l'entrée dans la table des déclarations*/
   struct cellule * fils; /*Pointeur vers le premier fils*/
   struct cellule * frere; /*Pointeur vers le premier frere*/
 };
 
-/*Les constantes ont leur valeur dans declaration*/
+/*Les constantes ont leur valeur dans lexeme*/
 typedef struct cellule cellule;
 
 /*Définition des codes/noyau*/
@@ -82,11 +80,11 @@ typedef struct cellule cellule;
 
 cellule creer_arbre_vide();
 
-void concat_pere_fils(cellule * pere, cellule * fils);
+cellule concat_pere_fils(cellule pere, cellule fils);
 
-void concat_pere_frere(cellule * pere, cellule * frere);
+cellule concat_pere_frere(cellule pere, cellule frere);
 
-cellule creer_fils_frere(int noy, int lex/*, int decl*/);
+cellule creer_fils_frere(int noy, int lex);
 
 int est_vide(cellule * cel);
 
