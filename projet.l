@@ -1,6 +1,7 @@
 %{
 #include "arbre.h"
 #include "y.tab.h"
+#include "Increment.h"
 int nb_lignes=1;
 %}
 
@@ -41,7 +42,7 @@ int nb_lignes=1;
 
 "entier" 						{yylval.entier=atoi(yytext);return ENTIER;}
 "reel" 							{yylval.entier=atoi(yytext);return REEL;}
-"booleen"						{yylval.entier=atoi(yytext);return BOOLEEN;}
+"booleen"						{yylval.booleen=atoi(yytext);return BOOLEEN;}
 "caractere"						{yylval.entier=atoi(yytext);return CARACTERE;}
 "chaine"						{yylval.entier=atoi(yytext);return CHAINE;}
 "var" 							{yylval.entier=atoi(yytext);return VARIABLE;}
