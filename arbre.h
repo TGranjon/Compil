@@ -1,3 +1,6 @@
+#ifndef ARBRE_H
+#define ARBRE_H
+
 #include "include.h"
 
 /*Déclaration de l'arbre abstrait*/
@@ -91,3 +94,5 @@ int est_vide(cellule * cel);
 char * lire_arbre(cellule * racine); /*Affiche le contenu d'une cellule (pour des tests)*/
 
 void lire_cellule(cellule * racine);
+
+#endif
