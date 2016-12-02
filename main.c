@@ -1,6 +1,10 @@
 #include "include.h"
 #include "arbre.c"
 
+/*
+* Dans ce fichier devra être éffectué des tests de programmes et l'affichage
+* de toutesles tables et de l'arbre.
+*/
 int main(int argc, char *argv[])
 {
     cellule cel=creer_fils_frere(PROG,12,12);

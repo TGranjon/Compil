@@ -104,7 +104,7 @@ type_simple		: ENTIER {$$=creer_fils_frere(279,-1);}
 				| REEL {$$=creer_fils_frere(280,-1);}
 				| BOOLEEN {$$=creer_fils_frere(303,-1);}
 				| CARACTERE {$$=creer_fils_frere(282,-1);}
-				| CHAINE CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_fils_frere(306,$1);}
+				| CHAINE CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_fils_frere(306,-1);}
 				;
 
 declaration_variable	: VARIABLE IDF DEUX_POINTS nom_type {ajouter_var($2,num_region,lexeme($4.lexeme));}
@@ -194,7 +194,7 @@ variable		: vararithmetique {$$=$1;}
 				| appel {$$=$1;}
 				;
 					  
-element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_arbre_vide(260,avoir_num_lexico($1));}/*Verifier si num_lexico==num_declaration*/
+element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_arbre_vide(260,avoir_num_lexico($1));}
 				;
 
 vararithmetique		: CSTE_ENTIERE {$$=creer_fils_frere(304,$1);}
