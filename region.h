@@ -18,7 +18,7 @@ int ajouter_region(int taille, int niveau_imbrication, cellule arbre);         /
 
 void affiche_tab_region(structRegion region[]);     // Procédure : affichage de la table des régions
 
-int calculer_taille(int X/*Numero declaration rendu par association de nom*/);							//Fonction : calcule la taille de l'objet donné en paramètre
+//int calculer_taille(int X/*Numero declaration rendu par association de nom*/);							//Fonction : calcule la taille de l'objet donné en paramètre
 
 #endif
 
