@@ -38,7 +38,7 @@ table_rep.o : table_rep.c table_rep.h
 	gcc -c table_rep.c table_rep.h
 
 projet : lex.yy.o y.tab.c
-	gcc -o projet lex.yy.o y.tab.c arbre.o declaration.o lexhc.o region.o Increment.o -ly -ll
+	gcc -o projet lex.yy.o y.tab.c arbre.o declaration.o lexhc.o region.o Increment.o table_rep.o -ly -ll
 
 analyse :
 	make y.tab.c

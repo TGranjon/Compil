@@ -4,16 +4,17 @@
   #include "Increment.h"
   #include "declaration.h"
   #include "lexhc.h"
+  #include "table_rep.h"
   int nb_lignes=1;
 %}
 
 %%
 "/"[\*](([^\"\*])|([\*]*[\"][^\"]*[\"])|([\*]+[^\*\/\"]))*[\*]+"/"	/* Commentaire sur plusieurs lignes */
 "//".*$ 								/* Commentaire sur une ligne. */
-"pg"[0-9 a-z A-Z]+				{yylval.entier=avoir_num_lexico(yytext);return PROG;}
+"pg"[0-9 a-z A-Z]+				{yylval.entier=atoi(yytext);return PROG;}
 "sortie"						{yylval.entier=atoi(yytext);return FPROG;}
-"tab"[0-9 a-z A-Z]+				{yylval.entier=avoir_num_lexico(yytext);return TABLEAU;}
-"struct"[0-9 a-z A-Z]+			{yylval.entier=avoir_num_lexico(yytext);return STRUCT;}
+"tab"[0-9 a-z A-Z]+				{yylval.chaine=yytext;return TABLEAU;}
+"struct"[0-9 a-z A-Z]+			{yylval.entier=atoi(yytext);return STRUCT;}
 "fstruct"						{yylval.entier=atoi(yytext);return FSTRUCT;}
 
 \; 								{return POINT_VIRGULE;}
@@ -74,7 +75,7 @@
 
 \'[a-z A-Z]\' 					{yylval.entier=avoir_num_lexico(yytext);return CSTE_CARACTERE;}
 \"[a-z A-Z]+\" 					{yylval.entier=avoir_num_lexico(yytext);return CSTE_CHAINE;}
-[A-Z] 							{yylval.entier=avoir_num_lexico(yytext);return IDF;}
+[A-Z] 							{yylval.entier=avoir_num_lexico(yytext);inserer_lexeme(yytext);return IDF;}
 
 \n 						   		{nb_lignes++;}
 %%

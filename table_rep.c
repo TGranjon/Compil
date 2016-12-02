@@ -8,16 +8,16 @@ int tabbornes[TAILLE_DIMENSIONS*2];
 
 int tab_rep[TAILLE_MAX];  
 /**************************intialisation de la table de rep*****************************************/
-void init_tab_rep(){      
+void init_tab_rep(int * tab){      
 	for(int i=0;i<TAILLE_MAX;i++)
-		tab_rep[i]=-1;
+		tab[i]=-1;
 
 }
 
 
 /****************************insertion struct ds la table de rep***********************************/
 
-int insertnbchamps(int nb_champs){
+void insertnbchamps(int nb_champs){
 
 
 	int i=case_vide(tab_rep);
@@ -131,7 +131,7 @@ void insertbornes( int *tabbornes){
 /**********************************fonction d'insertion de nb params  procedure********************************/
 //nb params procedure à récuperer dans le yacc
 
-void insertnbparamproc(int nbparam){
+void insertnbparam(int nbparam){
 
 	int j=case_vide(tab_rep);
 
@@ -143,7 +143,7 @@ void insertnbparamproc(int nbparam){
 
 /*******************************fonction d'insertion des params de procedure*******************/
  
-void insertparamproc(char *idf , char *type){
+void insertparam(char *idf , char *type){
 
 	int j=case_vide(tab_rep);
 	int i=0;
@@ -203,15 +203,14 @@ void inserttyperetour(char * type){
 
 /********************fonction d'insertion de nb params d'une fonction***************/
 
-void insertnbparamfct(int nbparam){
+/*void insertnbparamfct(int nbparam){
 
 	int j=case_vide(tab_rep);
 	tab_rep[j]=nbparam;
-}
+}*/
 
 /*******************fonction d'insertion des params d'une fonctions****************/
-
-void insertparamfct(char *idf,char* type){
+/*void insertparamfct(char *idf,char* type){
 	int j=case_vide(tab_rep);
 	int i=0;
 	while(strcmp(tableLexico[i].lexeme,idf)!=0){
@@ -239,7 +238,7 @@ void insertparamfct(char *idf,char* type){
 	}
 
 
-}
+}*/
 
 
 
