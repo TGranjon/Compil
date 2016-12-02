@@ -78,16 +78,16 @@ typedef struct cellule cellule;
 
 /*Prototype des fonctions*/
 
-cellule creer_arbre_vide();
+cellule creer_arbre_vide(); /*Creation et initialisation d'un arbre vide*/
 
-cellule concat_pere_fils(cellule pere, cellule fils);
+cellule concat_pere_fils(cellule pere, cellule fils); /*Permet d'ajouter la cellule fils en tant que fils de la cellule pere*/
 
-cellule concat_pere_frere(cellule pere, cellule frere);
+cellule concat_pere_frere(cellule pere, cellule frere); /*Permet d'ajouter la cellule frere en tant que frere de la cellule pere*/
 
 cellule creer_fils_frere(int noy, int lex);
 
 int est_vide(cellule * cel);
 
-char * lire_arbre(cellule * racine);
+char * lire_arbre(cellule * racine); /*Affiche le contenu d'une cellule (pour des tests)*/
 
 void lire_cellule(cellule * racine);

@@ -1,6 +1,4 @@
 #include "arbre.h"
-/*Possible inclusion de fichiers*/
-/*Ce fichier devra être inclus au moins dans le .y*/
 
 /*Déclaration des fonctions*/
 
@@ -14,13 +12,13 @@ cellule creer_arbre_vide()
   return cel;
 }
 
-cellule concat_pere_fils(cellule pere, cellule fils) /*Permet d'ajouter la cellule fils en tant que fils de la cellule pere*/
+cellule concat_pere_fils(cellule pere, cellule fils)
 {
   pere.fils=&fils;
   return pere;
 }
 
-cellule concat_pere_frere(cellule pere, cellule frere) /*Permet d'ajouter la cellule frere en tant que frere de la cellule pere*/
+cellule concat_pere_frere(cellule pere, cellule frere)
 {
   pere.frere=&frere;
   return pere;
@@ -45,6 +43,7 @@ int est_vide(cellule * cel)
   
 /*Il faut lire l'arbre de haut en bas puis de droite a gauche
  *C'est à dire que le(s) fils doit être lu avant de lire le frère
+ *La signification des entiers est contenue dans arbre.h
  */
 
 char * lire_arbre(cellule * racine)
@@ -68,7 +67,7 @@ char * lire_arbre(cellule * racine)
     fprintf(stderr,"Erreur, noyau non reconnu\n");
 }
 
-void lire_cellule(cellule * racine) /*Affiche le contenu d'une cellule (pour des tests)*/
+void lire_cellule(cellule * racine)
 {
   fprintf(stdout,"Noyau = %d\nLexeme = %d\n",racine->noyau,racine->lexeme);
   if(racine->fils==NULL)

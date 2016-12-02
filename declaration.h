@@ -35,9 +35,11 @@ void ajouter_tab(int numdecl,int numRegion,int numdescription) ;  //fonction : a
 
 void ajouter_var(int numdecl,int numRegion,char * type) ; //fonction : ajout d'un élément de type variable dans le tableau des déclarations
 
-void ajouter_proc(int numdecl,int numRegion,int numdescription)  ;                  //fonction : ajout d'un élément de type procédure dans le tableau des déclarations
+void ajouter_proc(int numdecl,int numRegion,int numdescription, int execution)  ;                  //fonction : ajout d'un élément de type procédure dans le tableau des déclarations
 
-void ajouter_fct(int numdecl,int numRegion,int numdescription);                    //fonction : ajout d'un élément de type fonction dans le tableau des déclarations
+void ajouter_fct(int numdecl,int numRegion,int numdescription, int execution);                    //fonction : ajout d'un élément de type fonction dans le tableau des déclarations
+
+int association_noms(int num_lexico, int region);
 
 //void affiche_tab_decla(structDecla tab[]);         //procédure : affichage du tableau des déclarations
 

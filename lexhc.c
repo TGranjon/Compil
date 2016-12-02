@@ -19,14 +19,14 @@ int hash_code(char * lexeme)
 	return sommeascii%32;
 }
 
-void init_hash_code(int * tab)
+/*void init_hash_code(int * tab)
 {
     //procédure : initialisation de toutes les cases de la table hash code à -1
 	int i = 0;
 	for(i=0;i<TAILLE_HASH;i++){
 		tab[i]=-1;
 	}
-}
+}*/
 
 void init_tab_lex(){
     int i;
