@@ -9,12 +9,10 @@ int tab_representation[MAX];
 
 int taille_struct(){
     return 0;
-    //à coder : peut s'avérer utile
 }
 
 int taille_tableau(){
     return 0;
-    //à coder : peut s'avérer utile
 }
 
 void init_tab_decla()
@@ -26,7 +24,7 @@ void init_tab_decla()
         tabDecla[i].suivant = -1;
         tabDecla[i].region = 0;
         tabDecla[i].description = -1;
-      //  tabDecla[i].execution = 0;
+      	tabDecla[i].execution = -1;
         //pour les types : entier, réel, booléen, char
     }
     for(i=4 ; i<=DECLARATION_MAX ; i++)
@@ -35,7 +33,7 @@ void init_tab_decla()
         tabDecla[i].suivant = -1;
         tabDecla[i].region = -1;
         tabDecla[i].description = -1;
-      //  tabDecla[i].execution = -1;
+      	tabDecla[i].execution = -1;
     }
 }
 
@@ -62,7 +60,7 @@ void ajouter_struct(int numdecl,int numRegion,int numdescription)
         tabDecla[numdecl].suivant = -1;
         tabDecla[numdecl].region = numRegion;
         tabDecla[numdecl].description = numdescription;
-
+		//tabDecla[numdecl].execution = tailleStruct();	
 
     }
     else
@@ -74,6 +72,7 @@ void ajouter_struct(int numdecl,int numRegion,int numdescription)
         tabDecla[deb].suivant = -1;
         tabDecla[deb].region = numRegion;
         tabDecla[deb].description = numdescription;
+		//tabDecla[deb].execution = tailleStruct();
         }
         else {
             int i = tabDecla[numdecl].suivant; int fin =0;
@@ -85,6 +84,7 @@ void ajouter_struct(int numdecl,int numRegion,int numdescription)
                     tabDecla[deb].suivant = -1;
                     tabDecla[deb].region = numRegion;
                     tabDecla[deb].description = numdescription;
+					//tabDecla[deb].execution = tailleStruct();
                     fin=1;
 
                 }
@@ -105,7 +105,7 @@ void ajouter_tab(int numdecl,int numRegion,int numdescription)
         tabDecla[numdecl].suivant = -1;
         tabDecla[numdecl].region = numRegion;
         tabDecla[numdecl].description = numdescription;
-
+		//tabDecla[numdecl].execution = taille_tableau();
 
     }
     else
@@ -117,6 +117,7 @@ void ajouter_tab(int numdecl,int numRegion,int numdescription)
         tabDecla[deb].suivant = -1;
         tabDecla[deb].region = numRegion;
         tabDecla[deb].description = numdescription;
+		//tabDecla[deb].execution = taille_tableau();
         }
         else {
             int i = tabDecla[numdecl].suivant; int fin =0;
@@ -128,6 +129,7 @@ void ajouter_tab(int numdecl,int numRegion,int numdescription)
                     tabDecla[deb].suivant = -1;
                     tabDecla[deb].region = numRegion;
                     tabDecla[deb].description = numdescription;
+					//tabDecla[deb].execution = taille_tableau();
                     fin=1;
 
                 }
@@ -159,18 +161,18 @@ void ajouter_var(int numdecl,int numRegion,char *type)
         tabDecla[numdecl].suivant = -1;
         tabDecla[numdecl].region = numRegion;
         tabDecla[numdecl].description=desc;
-
+        //tabDecla[numdecl].execution = 
     }
     else
     {
         if (tabDecla[numdecl].suivant==-1){
             int deb=casevide_debordement(tabDecla);
-         tabDecla[numdecl].suivant=deb;
-        tabDecla[deb].nature = TYPE_VAR;
-        tabDecla[deb].suivant = -1;
-        tabDecla[deb].region = numRegion;
-         tabDecla[deb].description=desc;
-
+			tabDecla[numdecl].suivant=deb;
+	        tabDecla[deb].nature = TYPE_VAR;
+	        tabDecla[deb].suivant = -1;
+	        tabDecla[deb].region = numRegion;
+	        tabDecla[deb].description=desc;
+       		//tabDecla[deb].execution = 
         }
         else {
             int i = tabDecla[numdecl].suivant; int fin =0;
@@ -182,6 +184,7 @@ void ajouter_var(int numdecl,int numRegion,char *type)
                     tabDecla[deb].suivant = -1;
                     tabDecla[deb].region = numRegion;
                     tabDecla[deb].description=desc;
+			        //tabDecla[deb].execution = 
                     fin=1;
 
                 }
@@ -196,7 +199,7 @@ void ajouter_var(int numdecl,int numRegion,char *type)
 
 }
 
-void ajouter_proc(int numdecl,int numRegion,int numdescription)
+void ajouter_proc(int numdecl,int numRegion,int numdescription, int execution)
 {
 
     if(tabDecla[numdecl].nature == -1)
@@ -205,7 +208,7 @@ void ajouter_proc(int numdecl,int numRegion,int numdescription)
         tabDecla[numdecl].suivant = -1;
         tabDecla[numdecl].region = numRegion;
         tabDecla[numdecl].description = numdescription;
-
+		tabDecla[numdecl].execution = execution;
 
     }
     else
@@ -217,6 +220,7 @@ void ajouter_proc(int numdecl,int numRegion,int numdescription)
         tabDecla[deb].suivant = -1;
         tabDecla[deb].region = numRegion;
         tabDecla[deb].description = numdescription;
+		tabDecla[deb].execution = execution;
         }
         else {
             int i = tabDecla[numdecl].suivant; int fin =0;
@@ -228,6 +232,7 @@ void ajouter_proc(int numdecl,int numRegion,int numdescription)
                     tabDecla[deb].suivant = -1;
                     tabDecla[deb].region = numRegion;
                     tabDecla[deb].description = numdescription;
+					tabDecla[deb].execution = execution;
                     fin=1;
 
                 }
@@ -244,7 +249,7 @@ void ajouter_proc(int numdecl,int numRegion,int numdescription)
 
 
 
-void ajouter_fct(int numdecl,int numRegion,int numdescription)
+void ajouter_fct(int numdecl,int numRegion,int numdescription, int execution)
 {
     if(tabDecla[numdecl].nature == -1)
     {
@@ -252,7 +257,7 @@ void ajouter_fct(int numdecl,int numRegion,int numdescription)
         tabDecla[numdecl].suivant = -1;
         tabDecla[numdecl].region = numRegion;
         tabDecla[numdecl].description = numdescription;
-
+		tabDecla[numdecl].execution = execution;
 
     }
     else
@@ -264,6 +269,7 @@ void ajouter_fct(int numdecl,int numRegion,int numdescription)
         tabDecla[deb].suivant = -1;
         tabDecla[deb].region = numRegion;
         tabDecla[deb].description = numdescription;
+		tabDecla[deb].execution = execution;
         }
         else {
             int i = tabDecla[numdecl].suivant; int fin =0;
@@ -275,6 +281,7 @@ void ajouter_fct(int numdecl,int numRegion,int numdescription)
                     tabDecla[deb].suivant = -1;
                     tabDecla[deb].region = numRegion;
                     tabDecla[deb].description = numdescription;
+					tabDecla[deb].execution = execution;
                     fin=1;
 
                 }
@@ -284,10 +291,10 @@ void ajouter_fct(int numdecl,int numRegion,int numdescription)
             }
         }
     }
-
-
-
 }
+
+
+
 
 
 void affiche_tab_decla(structDecla tab[])

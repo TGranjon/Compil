@@ -1,17 +1,19 @@
 %{
-#include "arbre.h"
-#include "y.tab.h"
-#include "Increment.h"
-int nb_lignes=1;
+  #include "arbre.h"
+  #include "y.tab.h"
+  #include "Increment.h"
+  #include "declaration.h"
+  #include "lexhc.h"
+  int nb_lignes=1;
 %}
 
 %%
 "/"[\*](([^\"\*])|([\*]*[\"][^\"]*[\"])|([\*]+[^\*\/\"]))*[\*]+"/"	/* Commentaire sur plusieurs lignes */
 "//".*$ 								/* Commentaire sur une ligne. */
-"pg"[0-9 a-z A-Z]+				{yylval.entier=atoi(yytext);return PROG;}
+"pg"[0-9 a-z A-Z]+				{yylval.entier=avoir_num_lexico(yytext);return PROG;}
 "sortie"						{yylval.entier=atoi(yytext);return FPROG;}
-"tab"[0-9 a-z A-Z]+				{yylval.entier=atoi(yytext);return TABLEAU;}
-"struct"[0-9 a-z A-Z]+			{yylval.entier=atoi(yytext);return STRUCT;}
+"tab"[0-9 a-z A-Z]+				{yylval.entier=avoir_num_lexico(yytext);return TABLEAU;}
+"struct"[0-9 a-z A-Z]+			{yylval.entier=avoir_num_lexico(yytext);return STRUCT;}
 "fstruct"						{yylval.entier=atoi(yytext);return FSTRUCT;}
 
 \; 								{return POINT_VIRGULE;}
@@ -40,14 +42,14 @@ int nb_lignes=1;
 \%chaine						{return POURCENT_CHAINE;}
 \%caractere						{return POURCENT_CARACTERE;}
 
-"entier" 						{yylval.entier=atoi(yytext);return ENTIER;}
-"reel" 							{yylval.entier=atoi(yytext);return REEL;}
-"booleen"						{yylval.booleen=atoi(yytext);return BOOLEEN;}
-"caractere"						{yylval.entier=atoi(yytext);return CARACTERE;}
-"chaine"						{yylval.entier=atoi(yytext);return CHAINE;}
-"var" 							{yylval.entier=atoi(yytext);return VARIABLE;}
-"proc" 							{yylval.entier=atoi(yytext);return PROCEDURE;}
-"fct" 							{yylval.entier=atoi(yytext);return FONCTION;}
+"entier" 						{yylval.entier=avoir_num_lexico(yytext);return ENTIER;}
+"reel" 							{yylval.entier=avoir_num_lexico(yytext);return REEL;}
+"booleen"						{yylval.entier=avoir_num_lexico(yytext);return BOOLEEN;}
+"caractere"						{yylval.entier=avoir_num_lexico(yytext);return CARACTERE;}
+"chaine"						{yylval.entier=avoir_num_lexico(yytext);return CHAINE;}
+"var" 							{yylval.entier=avoir_num_lexico(yytext);return VARIABLE;}
+"proc" 							{yylval.entier=avoir_num_lexico(yytext);return PROCEDURE;}
+"fct" 							{yylval.entier=avoir_num_lexico(yytext);return FONCTION;}
 	
 "retourne"						{return RETOURNE;}
 "si" 							{return SI;}
@@ -60,9 +62,9 @@ int nb_lignes=1;
 "pour"							{return POUR;}
 "jusqua"						{return JUSQUA;}
 
-"vrai"|"faux" 					{yylval.entier=atoi(yytext);return BOOL;}
-0|[1-9][0-9]* 					{yylval.entier=atoi(yytext);return CSTE_ENTIERE;}
-[1-9]*[0-9]\.[0-9]+ 			{yylval.entier=atoi(yytext);return CSTE_REELE;} /*au moins un chiffre après le point*/
+"vrai"|"faux" 					{yylval.entier=avoir_num_lexico(yytext);return BOOL;}
+0|[1-9][0-9]* 					{yylval.entier=avoir_num_lexico(yytext);return CSTE_ENTIERE;}
+[1-9]*[0-9]\.[0-9]+ 			{yylval.entier=avoir_num_lexico(yytext);return CSTE_REELE;} /*au moins un chiffre après le point*/
 "et" 							{return ET;}
 "ou" 							{return OU;}
 "vide"							{return VIDE;}
@@ -70,9 +72,9 @@ int nb_lignes=1;
 "lire"							{return LIRE;}
 "ecrire"						{return ECRIRE;}
 
-\'[a-z A-Z]\' 					{yylval.entier=atoi(yytext);return CSTE_CARACTERE;}
-\"[a-z A-Z]+\" 					{yylval.entier=atoi(yytext);return CSTE_CHAINE;}
-[A-Z] 							{yylval.entier=atoi(yytext);return IDF;}
+\'[a-z A-Z]\' 					{yylval.entier=avoir_num_lexico(yytext);return CSTE_CARACTERE;}
+\"[a-z A-Z]+\" 					{yylval.entier=avoir_num_lexico(yytext);return CSTE_CHAINE;}
+[A-Z] 							{yylval.entier=avoir_num_lexico(yytext);return IDF;}
 
 \n 						   		{nb_lignes++;}
 %%
