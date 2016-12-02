@@ -5,7 +5,7 @@
 
 
 
-void init_tab_rep(); //initialisation de la table de représentation
+void init_tab_rep(int * tab); //initialisation de la table de représentation
 void insertnbchamps(int nb_champs); //insertion struct ds la table de rep
 void insertchampstruct(char* idf,char *type); // insertion champs
 int case_vide(int tab[]); // la case vide dans une table

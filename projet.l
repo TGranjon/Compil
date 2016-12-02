@@ -4,6 +4,7 @@
   #include "Increment.h"
   #include "declaration.h"
   #include "lexhc.h"
+  #include "table_rep.h"
   int nb_lignes=1;
 %}
 
@@ -12,7 +13,7 @@
 "//".*$ 								/* Commentaire sur une ligne. */
 "pg"[0-9 a-z A-Z]+				{yylval.entier=atoi(yytext);return PROG;}
 "sortie"						{yylval.entier=atoi(yytext);return FPROG;}
-"tab"[0-9 a-z A-Z]+				{yylval.entier=atoi(yytext);return TABLEAU;}
+"tab"[0-9 a-z A-Z]+				{yylval.chaine=yytext;return TABLEAU;}
 "struct"[0-9 a-z A-Z]+			{yylval.entier=atoi(yytext);return STRUCT;}
 "fstruct"						{yylval.entier=atoi(yytext);return FSTRUCT;}
 

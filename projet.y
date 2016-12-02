@@ -4,16 +4,17 @@
   #include "Increment.h"
   #include "declaration.h"
   #include "lexhc.h"
+  #include "table_rep.h"
   
   extern int yylex() ;
   extern int yyerror() ;
   extern int nb_lignes ;
   int num_region = 0;
   int NIS = 0;
-  int case_vide = 0; 
   int nb_champs = 0;
   int nb_parametres = 0;
   int nb_dimensions = 0;
+  int tab_rep[TAILLE_MAX];
 %}
 	%union{
       int entier;
@@ -25,7 +26,7 @@
     }
 	%token <entier> PROG 
 	%token FPROG
-	%token <entier> TABLEAU STRUCT
+	%token <chaine> TABLEAU <arbre> STRUCT
 	%token FSTRUCT
 	%token POINT_VIRGULE DEUX_POINTS CROCHET_OUVRANT CROCHET_FERMANT VIRGULE POINTPOINT PARENTHESE_OUVRANTE PARENTHESE_FERMANTE PIPE
 	%token <entier> OPAFF
@@ -51,7 +52,7 @@
 programme		: PROG  corps FPROG {$$=concat_pere_fils(creer_fils_frere(258,-1),$2);} 
 				;
 
-corps                   : liste_declarations liste_instructions {$$=concat_pere_frere($1,$3);}
+corps                   : liste_declarations liste_instructions {$$=concat_pere_frere($1,$2);}
 		      		    | liste_instructions {$$=$1;}
 						;
 
@@ -74,8 +75,8 @@ declaration		: declaration_type POINT_VIRGULE {$$=creer_arbre_vide();}
 
 declaration_type	: type_simple IDF DEUX_POINTS suite_declaration_type ;
 
-suite_declaration_type	: STRUCT liste_champs FSTRUCT {insertnbchamps(nb_champs);zero_nb_champs(nb_champs);ajouter_struct($1,num_region,case_vide(tab_rep));}
-						| nom_type TABLEAU dimension {inserttypetab($1);ajouter_tab($1.lexeme,num_region-NIS,case_vide(tab_rep));}
+suite_declaration_type	: STRUCT liste_champs FSTRUCT {insertnbchamps(nb_champs);zero_nb_champs(nb_champs);ajouter_struct($1.lexeme,num_region,case_vide(tab_rep));}
+						| nom_type TABLEAU dimension {inserttypetab(lexeme($1.lexeme));ajouter_tab($1.lexeme,num_region-NIS,case_vide(tab_rep));}
 						;
 
 dimension		: CROCHET_OUVRANT liste_dimensions CROCHET_FERMANT {insertnbdimensions(nb_dimensions);zero_nb_dimensions(nb_dimensions);}
@@ -92,7 +93,7 @@ liste_champs		: un_champ
 					| liste_champs PIPE un_champ
 					;
 
-un_champ		: IDF DEUX_POINTS nom_type {incrementer_nb_champs(nb_champs);insererchampstruct($1,$3);}
+un_champ		: IDF DEUX_POINTS nom_type {incrementer_nb_champs(nb_champs);insertchampstruct(lexeme($1),lexeme($3.lexeme));}
 				;
 
 nom_type		: type_simple {$$=$1;}
@@ -103,16 +104,16 @@ type_simple		: ENTIER {$$=creer_fils_frere(279,-1);}
 				| REEL {$$=creer_fils_frere(280,-1);}
 				| BOOLEEN {$$=creer_fils_frere(303,-1);}
 				| CARACTERE {$$=creer_fils_frere(282,-1);}
-				| CHAINE CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_fils_frere(306,avoir_num_lexico($1);} /*Verifier si num_lexico==num_declaration*/
+				| CHAINE CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_fils_frere(306,$1);}
 				;
 
-declaration_variable	: VARIABLE IDF DEUX_POINTS nom_type {ajouter_var($2,$4.lexeme,num_region-NIS,?/*Type?*/,$4,?/*Deplacement a l'execution*/);}
+declaration_variable	: VARIABLE IDF DEUX_POINTS nom_type {ajouter_var($2,num_region,lexeme($4.lexeme));}
 						;
 
-declaration_procedure	: PROCEDURE IDF liste_parametres corps {incrementer_num_region(num_region);ajouter_proc($2,num_region-NIS,case_vide(tab_rep),num_region);incrementer_NIS(NIS);creer_fils_frere(284,$2);ajouter_proc($2,numregion,case_vide(tab_rep));}
+declaration_procedure	: PROCEDURE IDF liste_parametres corps {incrementer_num_region(num_region);ajouter_proc($2,num_region,case_vide(tab_rep),num_region);incrementer_NIS(NIS);creer_fils_frere(284,$2);}
 						;
 
-declaration_fonction	: FONCTION IDF liste_parametres RETOURNE type_simple corps {incrementer_num_region(num_region);ajouter_fct($2,num_region-NIS,case_vide(tab_rep),num_region);incrementer_NIS(NIS);creer_fils_frere(285,$2);}
+declaration_fonction	: FONCTION IDF liste_parametres RETOURNE type_simple corps {incrementer_num_region(num_region);ajouter_fct($2,num_region,case_vide(tab_rep),num_region);incrementer_NIS(NIS);creer_fils_frere(285,$2);}
 						;
 
 liste_parametres	: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE {$$=creer_arbre_vide();zero_nb_parametres(nb_parametres);insertnbparam(0);}
@@ -123,7 +124,7 @@ liste_param		: un_param {$$=$1;}
 				| liste_param PIPE un_param {concat_pere_frere($1,$3);}
 				;
 
-un_param		: IDF DEUX_POINTS type_simple {creer_fils_frere(288,$1);incrementer_nb_parametres(nb_parametres);insertparam($1,$3);}
+un_param		: IDF DEUX_POINTS type_simple {creer_fils_frere(288,$1);incrementer_nb_parametres(nb_parametres);insertparam(lexeme($1),lexeme($3.lexeme));}
 				;
 
 instruction		: affectation POINT_VIRGULE {$$=$1;}
@@ -131,7 +132,7 @@ instruction		: affectation POINT_VIRGULE {$$=$1;}
 				| tant_que POINT_VIRGULE {$$=$1;}
 				| pour POINT_VIRGULE {$$=$1;}
 				| appel POINT_VIRGULE {$$=$1;}
-				| RETOURNE resultat_retourne POINT_VIRGULE {concat_pere_fils(creer_fils_frere(286,-1),$2);inserttyperetour($2);}
+				| RETOURNE resultat_retourne POINT_VIRGULE {concat_pere_fils(creer_fils_frere(286,-1),$2);inserttyperetour(lexeme($2.lexeme));}
 				| LIRE PARENTHESE_OUVRANTE liste_variables PARENTHESE_FERMANTE POINT_VIRGULE {concat_pere_fils(creer_fils_frere(314,-1),$3);}
 				| ECRIRE PARENTHESE_OUVRANTE format suite_ecriture PARENTHESE_FERMANTE POINT_VIRGULE {concat_pere_fils(creer_fils_frere(315,-1),concat_pere_frere($3,$4));}
 				;
@@ -187,13 +188,13 @@ affectation		: variable OPAFF variable {concat_pere_fils(creer_fils_frere(272,-1
 variable		: vararithmetique {$$=$1;}
 				| varchar {$$=$1;}
 				| IDF {$$=creer_fils_frere(288,$1);}
-				| TABLEAU {$$=creer_fils_frere(260,$1);}
+				| TABLEAU {$$=creer_fils_frere(260,avoir_num_lexico($1));}
 				| element_tab {$$=$1;}
 				| BOOL {$$=creer_fils_frere(281,$1);}
 				| appel {$$=$1;}
 				;
 					  
-element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_arbre_vide(260,avoir_num_lexico($1);}/*Verifier si num_lexico==num_declaration*/
+element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_arbre_vide(260,avoir_num_lexico($1));}/*Verifier si num_lexico==num_declaration*/
 				;
 
 vararithmetique		: CSTE_ENTIERE {$$=creer_fils_frere(304,$1);}
@@ -250,7 +251,8 @@ int yyerror()
 
 int main(){
 init_tab_lex();
-init_hash_code();
+//init_hash_code();
 init_tab_decla();
- init_tab_rep();
+
+init_tab_rep(tab_rep);
 }

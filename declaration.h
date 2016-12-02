@@ -39,6 +39,8 @@ void ajouter_proc(int numdecl,int numRegion,int numdescription, int execution)  
 
 void ajouter_fct(int numdecl,int numRegion,int numdescription, int execution);                    //fonction : ajout d'un élément de type fonction dans le tableau des déclarations
 
+int association_noms(int num_lexico, int region);
+
 //void affiche_tab_decla(structDecla tab[]);         //procédure : affichage du tableau des déclarations
 
 

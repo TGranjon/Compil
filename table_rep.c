@@ -8,9 +8,9 @@ int tabbornes[TAILLE_DIMENSIONS*2];
 
 int tab_rep[TAILLE_MAX];  
 /**************************intialisation de la table de rep*****************************************/
-void init_tab_rep(){      
+void init_tab_rep(int * tab){      
 	for(int i=0;i<TAILLE_MAX;i++)
-		tab_rep[i]=-1;
+		tab[i]=-1;
 
 }
 

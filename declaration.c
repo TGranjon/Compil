@@ -243,8 +243,6 @@ void ajouter_proc(int numdecl,int numRegion,int numdescription, int execution)
         }
     }
 
-
-
 }
 
 
@@ -293,8 +291,22 @@ void ajouter_fct(int numdecl,int numRegion,int numdescription, int execution)
     }
 }
 
-
-
+int association_noms(int num_lexico, int region)
+{
+	if(tabDecla[num_lexico].nature == -1)
+	{
+		return -1;
+	}
+	if(tabDecla[num_lexico].region == region)
+	{
+		return num_lexico;
+	}
+	else if(tabDecla[num_lexico].suivant != -1)
+	{
+		association_noms(tabDecla[num_lexico].suivant,region);
+	}
+	else return -1;
+}
 
 
 void affiche_tab_decla(structDecla tab[])
