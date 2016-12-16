@@ -3,7 +3,7 @@
 #define TAILLE_MAX 5000
 #define TAILLE_DIMENSIONS 5
 
-
+int tab_rep[TAILLE_MAX];  
 
 void init_tab_rep(int * tab); //initialisation de la table de représentation
 void insertnbchamps(int nb_champs); //insertion struct ds la table de rep

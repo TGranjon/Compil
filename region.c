@@ -17,6 +17,7 @@ int ajouter_region(int taille, int niveau_imbrication, cellule arbre){
     printf("Erreur, la limite mémoire a été atteinte !\n");
     exit(-1);
   }
+  tabRegion[nbRegion].taille = taille;
   tabRegion[nbRegion].niveau_imbrication = niveau_imbrication;
   nbRegion++;
   return 0;
