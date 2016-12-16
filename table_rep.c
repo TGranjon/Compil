@@ -4,9 +4,7 @@
 
 
 int tabbornes[TAILLE_DIMENSIONS*2];
-/**************************declaration table representation*****************************************/
 
-int tab_rep[TAILLE_MAX];  
 /**************************intialisation de la table de rep*****************************************/
 void init_tab_rep(int * tab){      
 	for(int i=0;i<TAILLE_MAX;i++)

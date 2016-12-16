@@ -1,6 +1,6 @@
 #include "region.h"
 
-structRegion tabRegion[MAX_REGION];
+
 int nbRegion = 0;
 
 void init_tab_region() {
@@ -17,12 +17,13 @@ int ajouter_region(int taille, int niveau_imbrication, cellule arbre){
     printf("Erreur, la limite mémoire a été atteinte !\n");
     exit(-1);
   }
+  tabRegion[nbRegion].taille = taille;
   tabRegion[nbRegion].niveau_imbrication = niveau_imbrication;
   nbRegion++;
   return 0;
 }
 
-void affiche_tab_region(structRegion region[]) {
+void affiche_table_region(structRegion region[]) {
 
   int i;
   printf("\n-----Table des régions-----\n");
