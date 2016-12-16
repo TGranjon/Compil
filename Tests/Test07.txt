@@ -1,0 +1,15 @@
+pgAddition
+var A : entier ; |
+var B : entier; |
+fct Z (M : entier | N : entier) retourne entier
+var C : entier ;
+debut
+C := M + N ; |
+retourne C;
+fin ;
+debut
+A := 3 ; |
+B := 4 ; |
+Z(A , B) ;
+fin
+sortie

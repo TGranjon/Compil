@@ -1,0 +1,5 @@
+pg02
+debut
+retourne vrai ;
+fin
+sortie

@@ -1,0 +1,27 @@
+pgSommeCarre
+var A : entier ; |
+var B : entier; |
+fct T (O : entier) retourne entier
+var D : entier ;
+debut
+D := O * O ; |
+retourne D;
+fin ;
+fct S (M : entier | N : entier) retourne entier
+var C : entier ;
+debut
+C := M + N ; |
+retourne C;
+fin ; |
+
+
+
+debut
+A := 3 ; |
+B := 4 ; |
+S(T(A),T(B)) ;
+fin
+sortie
+
+// On teste une fonction avec comme paramètres des appels à une autre fonction.
+

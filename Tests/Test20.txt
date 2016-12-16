@@ -1,0 +1,24 @@
+pgPOUR
+var A : entier ; |
+var B : entier; |
+fct Z (M : entier | N : entier) retourne entier
+var C : entier ;
+debut
+C := 1 + 2 ; |
+A := C; |
+B := 4 ; |
+tant que ( vrai et vrai ) faire
+ debut 
+pour ( A jusqua  B) faire
+debut
+C := 1 + 2 ; 
+fin;
+fin ;|
+retourne C;
+fin ;
+debut
+A := 3 ; |
+B := 4 ; |
+Z(A , B) ;
+fin
+sortie
