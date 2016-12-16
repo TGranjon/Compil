@@ -15,7 +15,6 @@
   int nb_champs = 0;
   int nb_parametres = 0;
   int nb_dimensions = 0;
-  int tab_rep[TAILLE_MAX];
 %}
 	%union{
       int entier;
@@ -27,13 +26,13 @@
     }
 	%token <entier> PROG 
 	%token FPROG
-	%token <chaine> TABLEAU <arbre> STRUCT
+	%token <chaine> TABLEAU  STRUCT
 	%token FSTRUCT
 	%token POINT_VIRGULE DEUX_POINTS CROCHET_OUVRANT CROCHET_FERMANT VIRGULE POINTPOINT PARENTHESE_OUVRANTE PARENTHESE_FERMANTE PIPE
 	%token <entier> OPAFF
 	%token <entier> EGAL INF INFEGAL SUP SUPEGAL DIFF
-	%token <entier> ENTIER REEL BOOL CARACTERE VARIABLE PROCEDURE FONCTION RETOURNE CHAINE
-	%token <entier> IDF 
+	%token <entier> ENTIER REEL IDF CARACTERE VARIABLE PROCEDURE FONCTION RETOURNE CHAINE
+	%token <booleen> BOOL
 	%token <entier> POURCENT_ENTIER POURCENT_REEL POURCENT_CHAINE POURCENT_CARACTERE
 	%token <entier> SI ALORS SINON TANT_QUE FAIRE DEBUT FIN POUR JUSQUA 
 
@@ -49,6 +48,7 @@
 	%type <arbre> condition tant_que affectation variable vararithmetique varchar expression1 expression2 expression3 expressionchar expressioncomp element_tab
 	%type <arbre> nom_type type_simple
 	%type <entier> varlogique comparateur
+	%type <chaine> suite_declaration_type
 %%
 programme		: PROG  corps FPROG {$$=concat_pere_fils(creer_fils_frere(258,-1),$2);} 
 				;
@@ -61,7 +61,7 @@ liste_declarations	: declaration {$$=$1;}
 					| liste_declarations PIPE declaration {$$=concat_pere_frere($1,$3);}
 					;
 
-liste_instructions	: DEBUT {incrementer_NIS(NIS);} suite_liste_inst FIN {$$=$3;decrementer_NIS(NIS);}
+liste_instructions	: DEBUT {NIS++;} suite_liste_inst FIN {$$=$3;NIS--;}
 					;
 
 suite_liste_inst	: instruction {$$=$1;}
@@ -74,58 +74,58 @@ declaration		: declaration_type POINT_VIRGULE {$$=creer_arbre_vide();}
 				| declaration_fonction POINT_VIRGULE {$$=$1;}
 				;
 
-declaration_type	: type_simple IDF DEUX_POINTS suite_declaration_type ;
+declaration_type	: type_simple IDF DEUX_POINTS suite_declaration_type {ajouter_type($2,num_region,case_vide(tab_rep),$4);};
 
-suite_declaration_type	: STRUCT liste_champs FSTRUCT {insertnbchamps(nb_champs);zero_nb_champs(nb_champs);ajouter_struct($1.lexeme,num_region,case_vide(tab_rep));}
-						| nom_type TABLEAU dimension {inserttypetab(lexeme($1.lexeme));ajouter_tab($1.lexeme,num_region-NIS,case_vide(tab_rep));}
+suite_declaration_type	: STRUCT liste_champs FSTRUCT {$$=$1;/*insertnbchamps(nb_champs);zero_nb_champs(nb_champs);*/}
+						| nom_type TABLEAU dimension {$$=$2;/*inserttypetab(lexeme($1.lexeme))*/}
 						;
 
-dimension		: CROCHET_OUVRANT liste_dimensions CROCHET_FERMANT {insertnbdimensions(nb_dimensions);zero_nb_dimensions(nb_dimensions);}
+dimension		: CROCHET_OUVRANT liste_dimensions CROCHET_FERMANT {/*insertnbdimensions(nb_dimensions);zero_nb_dimensions(nb_dimensions);*/}
 				;
 
 liste_dimensions	: une_dimension
 					| liste_dimensions VIRGULE une_dimension
 					;
 
-une_dimension		: CSTE_ENTIERE POINTPOINT CSTE_ENTIERE {incrementer_nb_dimensions(nb_dimensions);}
+une_dimension		: CSTE_ENTIERE POINTPOINT CSTE_ENTIERE {/*incrementer_nb_dimensions(nb_dimensions);*/}
 					;
 
 liste_champs		: un_champ
 					| liste_champs PIPE un_champ
 					;
 
-un_champ		: IDF DEUX_POINTS nom_type {incrementer_nb_champs(nb_champs);insertchampstruct(lexeme($1),lexeme($3.lexeme));}
+un_champ		: IDF DEUX_POINTS nom_type {/*incrementer_nb_champs(nb_champs);insertchampstruct(lexeme($1),lexeme($3.lexeme));*/}
 				;
 
 nom_type		: type_simple {$$=$1;}
 				| IDF {$$=creer_fils_frere(288,$1);}
 				;
 
-type_simple		: ENTIER {$$=creer_fils_frere(279,-1);}
-				| REEL {$$=creer_fils_frere(280,-1);}
-				| BOOLEEN {$$=creer_fils_frere(303,-1);}
-				| CARACTERE {$$=creer_fils_frere(282,-1);}
+type_simple		: ENTIER {$$=creer_fils_frere(279,0);}
+				| REEL {$$=creer_fils_frere(280,1);}
+				| BOOLEEN {$$=creer_fils_frere(303,2);}
+				| CARACTERE {$$=creer_fils_frere(282,3);}
 				| CHAINE CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_fils_frere(306,-1);}
 				;
 
 declaration_variable	: VARIABLE IDF DEUX_POINTS nom_type {ajouter_var($2,num_region,lexeme($4.lexeme));}
 						;
 
-declaration_procedure	: PROCEDURE IDF liste_parametres corps {incrementer_num_region(num_region);ajouter_proc($2,num_region,case_vide(tab_rep),num_region);incrementer_NIS(NIS);creer_fils_frere(284,$2);}
+declaration_procedure	: PROCEDURE IDF {num_region++;NIS++;} liste_parametres corps {ajouter_proc($2,num_region,case_vide(tab_rep),num_region);creer_fils_frere(284,$2);}
 						;
 
-declaration_fonction	: FONCTION IDF liste_parametres RETOURNE type_simple corps {incrementer_num_region(num_region);ajouter_fct($2,num_region,case_vide(tab_rep),num_region);incrementer_NIS(NIS);creer_fils_frere(285,$2);}
+declaration_fonction	: FONCTION IDF {num_region++;NIS++;} liste_parametres RETOURNE type_simple corps {ajouter_fct($2,num_region,case_vide(tab_rep),num_region);creer_fils_frere(285,$2);}
 						;
 
-liste_parametres	: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE {$$=creer_arbre_vide();zero_nb_parametres(nb_parametres);insertnbparam(0);}
-					| PARENTHESE_OUVRANTE liste_param PARENTHESE_FERMANTE {$$=$2;zero_nb_parametres(nb_parametres);insertnbparam(nb_parametres);}
+liste_parametres	: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE {$$=creer_arbre_vide();/*zero_nb_parametres(nb_parametres);insertnbparam(0);*/}
+					| PARENTHESE_OUVRANTE liste_param PARENTHESE_FERMANTE {$$=$2;/*insertnbparam(nb_parametres);zero_nb_parametres(nb_parametres);*/}
 					;
 
-liste_param		: un_param {$$=$1;}
+liste_param		: un_param {$$=$1;} 
 				| liste_param PIPE un_param {concat_pere_frere($1,$3);}
 				;
 
-un_param		: IDF DEUX_POINTS type_simple {creer_fils_frere(288,$1);incrementer_nb_parametres(nb_parametres);insertparam(lexeme($1),lexeme($3.lexeme));}
+un_param		: IDF DEUX_POINTS type_simple {creer_fils_frere(288,$1);/*incrementer_nb_parametres(nb_parametres);insertparam(lexeme($1),lexeme($3.lexeme));*/}
 				;
 
 instruction		: affectation POINT_VIRGULE {$$=$1;}
@@ -133,7 +133,7 @@ instruction		: affectation POINT_VIRGULE {$$=$1;}
 				| tant_que POINT_VIRGULE {$$=$1;}
 				| pour POINT_VIRGULE {$$=$1;}
 				| appel POINT_VIRGULE {$$=$1;}
-				| RETOURNE resultat_retourne POINT_VIRGULE {concat_pere_fils(creer_fils_frere(286,-1),$2);inserttyperetour(lexeme($2.lexeme));}
+				| RETOURNE resultat_retourne POINT_VIRGULE {concat_pere_fils(creer_fils_frere(286,-1),$2);/*inserttyperetour(lexeme($2.lexeme));*/}
 				| LIRE PARENTHESE_OUVRANTE liste_variables PARENTHESE_FERMANTE POINT_VIRGULE {concat_pere_fils(creer_fils_frere(314,-1),$3);}
 				| ECRIRE PARENTHESE_OUVRANTE format suite_ecriture PARENTHESE_FERMANTE POINT_VIRGULE {concat_pere_fils(creer_fils_frere(315,-1),concat_pere_frere($3,$4));}
 				;
@@ -195,7 +195,7 @@ variable		: vararithmetique {$$=$1;}
 				| appel {$$=$1;}
 				;
 					  
-element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_arbre_vide(260,avoir_num_lexico($1));}
+element_tab		: IDF CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_arbre_vide(260,$1);}
 				;
 
 vararithmetique		: CSTE_ENTIERE {$$=creer_fils_frere(304,$1);}
@@ -247,7 +247,8 @@ expressioncomp		: vararithmetique comparateur vararithmetique {concat_pere_fils(
 %%
 int yyerror()
 {
-  printf("Erreur de syntaxe en ligne %d\n",nb_lignes) ;
+  printf("Erreur de syntaxe en ligne %d\n",nb_lignes);
+  exit(-1);
 }
 
 int main(){
@@ -260,9 +261,8 @@ int main(){
 
 
 	affiche_table_hash_code(tab_hash_code);
-	affiche_table_lexico(tableLexico,10);
+	affiche_table_lexico(tableLexico,20);
 	affiche_table_decla(tabDecla);
-	affiche_table_region(tabRegion);
 
 	init_tab_rep(tab_rep);
 }

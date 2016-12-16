@@ -29,9 +29,9 @@ structDecla tabDecla[DECLARATION_MAX];
 void init_tab_decla();                             //procédure : initialisation du tableau des déclarations (4 premières lignes -> types primitifs)
 
 int casevide_debordement(structDecla tab []);
-void ajouter_struct(int numdecl,int numRegion,int numdescription) ;                //fonction : ajout d'un élément de type struct dans le tableau des déclarations
+void ajouter_type(int numdecl,int numRegion,int numdescription,char * type) ;                //fonction : ajout d'un élément de type struct dans le tableau des déclarations
 
-void ajouter_tab(int numdecl,int numRegion,int numdescription) ;  //fonction : ajout d'un élément de type tableau dans le tableau des déclarations
+//void ajouter_tab(int numdecl,int numRegion,int numdescription) ;  //fonction : ajout d'un élément de type tableau dans le tableau des déclarations
 
 void ajouter_var(int numdecl,int numRegion,char * type) ; //fonction : ajout d'un élément de type variable dans le tableau des déclarations
 

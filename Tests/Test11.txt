@@ -2,8 +2,8 @@ pgPROC
 var A : entier ; |
 var B : entier; |
 var C : booleen; |
-proc Z ( R : entier |  S : entier) 
-var C : entier ;
+proc Z (B : entier)
+var G : entier ;
 debut
 C := 5;
 

@@ -24,8 +24,8 @@ void init_tab_decla()
         tabDecla[i].nature = TYPE_BASE;
         tabDecla[i].suivant = -1;
         tabDecla[i].region = 0;
-        tabDecla[i].description = -1;
-      	tabDecla[i].execution = -1;
+        tabDecla[i].description = i;
+      	tabDecla[i].execution = 1;
 
         //pour les types : entier, réel, booléen, char
     }
@@ -53,28 +53,38 @@ int casevide_debordement(structDecla tab []){
  else { return -1;}
 }
 
-void ajouter_struct(int numdecl,int numRegion,int numdescription)
+void ajouter_type(int numdecl,int numRegion,int numdescription,char * type)
 {
+int nat;
+
+	if ('s'== type[0]) {
+              nat=TYPE_STRUCT; 
+
+                
+       }
+	if ('t' == type[0]) {
+            nat=TYPE_TAB;   
+       }
 
     if(tabDecla[numdecl].nature == -1)
     {
-        tabDecla[numdecl].nature = TYPE_STRUCT;
+       tabDecla[numdecl].nature = nat;
         tabDecla[numdecl].suivant = -1;
         tabDecla[numdecl].region = numRegion;
         tabDecla[numdecl].description = numdescription;
 		//tabDecla[numdecl].execution = tailleStruct();	
-
+    		//tabDecla[numdecl].execution = taille_tableau();
     }
     else
     {
         if (tabDecla[numdecl].suivant==-1){
             int deb=casevide_debordement(tabDecla);
          tabDecla[numdecl].suivant=deb;
-        tabDecla[deb].nature = TYPE_STRUCT;
+        tabDecla[deb].nature = nat;
         tabDecla[deb].suivant = -1;
         tabDecla[deb].region = numRegion;
         tabDecla[deb].description = numdescription;
-		//tabDecla[deb].execution = tailleStruct();
+		//tabDecla[deb].execution = tailleStruct();//tabDecla[numdecl].execution = taille_tableau();
         }
         else {
             int i = tabDecla[numdecl].suivant; int fin =0;
@@ -82,11 +92,11 @@ void ajouter_struct(int numdecl,int numRegion,int numdescription)
                 if (tabDecla[i].suivant==-1){
                     int deb =casevide_debordement(tabDecla);
                     tabDecla[i].suivant=deb;
-                    tabDecla[deb].nature = TYPE_STRUCT;
+                    tabDecla[deb].nature = nat;
                     tabDecla[deb].suivant = -1;
                     tabDecla[deb].region = numRegion;
                     tabDecla[deb].description = numdescription;
-					//tabDecla[deb].execution = tailleStruct();
+					//tabDecla[deb].execution = tailleStruct();//tabDecla[numdecl].execution = taille_tableau();
                     fin=1;
 
                 }
@@ -99,7 +109,7 @@ void ajouter_struct(int numdecl,int numRegion,int numdescription)
 
 }
 
-void ajouter_tab(int numdecl,int numRegion,int numdescription)
+/*void ajouter_tab(int numdecl,int numRegion,int numdescription)
 {
       if(tabDecla[numdecl].nature == -1)
     {
@@ -143,19 +153,21 @@ void ajouter_tab(int numdecl,int numRegion,int numdescription)
     }
 
 
-}
+}*/
 
 void ajouter_var(int numdecl,int numRegion,char *type)
 {
-    int desc; int i =0, trouv =0;
+
+    int desc=0; int i =0, trouv =0;
     while ((i<TAILLE_LEXICO) && (trouv!=1)){
-        if (tableLexico[i].lexeme==type){
+        if (strcmp(tableLexico[i].lexeme, type) ==0){
             desc=i;
+
             trouv=1;
         }
         i++;
     }
-
+   
 
     if(tabDecla[numdecl].nature == -1)
     {
@@ -163,7 +175,7 @@ void ajouter_var(int numdecl,int numRegion,char *type)
         tabDecla[numdecl].suivant = -1;
         tabDecla[numdecl].region = numRegion;
         tabDecla[numdecl].description=desc;
-        //tabDecla[numdecl].execution = 
+        tabDecla[numdecl].execution = 1;
     }
     else
     {
@@ -174,7 +186,7 @@ void ajouter_var(int numdecl,int numRegion,char *type)
 	        tabDecla[deb].suivant = -1;
 	        tabDecla[deb].region = numRegion;
 	        tabDecla[deb].description=desc;
-       		//tabDecla[deb].execution = 
+       		tabDecla[deb].execution = 1;
         }
         else {
             int i = tabDecla[numdecl].suivant; int fin =0;
@@ -315,9 +327,9 @@ void affiche_table_decla(structDecla tab[])
 {
     int i;
     char * nature;
-    printf("\n______________Table des déclarations______________\n");
+    printf("\n______________Table des déclarations_______________________________\n");
     printf(" Numlex\t|Nature\t\t|Suivant|Région\t| Description\t| Exécution\n");
-    for (i=0 ; i<debordement ; i++)
+    for (i=0 ; i<DECLARATION_MAX ; i++)
         if(tab[i].nature != -1){
                 switch(tab[i].nature){
                     case TYPE_BASE :
@@ -339,6 +351,7 @@ void affiche_table_decla(structDecla tab[])
                     printf(" %d\t| %s\t| %d\t| %d\t| %d\t\t| %d\n",i, nature, tab[i].suivant, tab[i].region, tab[i].description, tab[i].execution);
 
         }
+	printf("\n___________________________________________________________________\n\n");
 }
 
 /*void afficher_tab_rep(){
