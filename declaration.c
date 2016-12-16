@@ -17,23 +17,25 @@ int taille_tableau(){
 
 void init_tab_decla()
 {
-    int i;
-    for(i=0 ; i<=3 ; i++)
+    for(int i=0 ; i<=3 ; i++)
     {
+
+	
         tabDecla[i].nature = TYPE_BASE;
         tabDecla[i].suivant = -1;
         tabDecla[i].region = 0;
         tabDecla[i].description = -1;
       	tabDecla[i].execution = -1;
+
         //pour les types : entier, réel, booléen, char
     }
-    for(i=4 ; i<=DECLARATION_MAX ; i++)
+    for(int j=4 ; j<DECLARATION_MAX ; j++)
     {
-        tabDecla[i].nature = -1;
-        tabDecla[i].suivant = -1;
-        tabDecla[i].region = -1;
-        tabDecla[i].description = -1;
-      	tabDecla[i].execution = -1;
+        tabDecla[j].nature = -1;
+        tabDecla[j].suivant = -1;
+        tabDecla[j].region = -1;
+        tabDecla[j].description = -1;
+      	tabDecla[j].execution = -1;
     }
 }
 
@@ -145,15 +147,17 @@ void ajouter_tab(int numdecl,int numRegion,int numdescription)
 
 void ajouter_var(int numdecl,int numRegion,char *type)
 {
-    int desc; int i =0, trouv =0;
+
+    int desc=0; int i =0, trouv =0;
     while ((i<TAILLE_LEXICO) && (trouv!=1)){
-        if (tableLexico[i].lexeme==type){
+        if (strcmp(tableLexico[i].lexeme, type) ==0){
             desc=i;
+
             trouv=1;
         }
         i++;
     }
-
+   
 
     if(tabDecla[numdecl].nature == -1)
     {
@@ -161,7 +165,7 @@ void ajouter_var(int numdecl,int numRegion,char *type)
         tabDecla[numdecl].suivant = -1;
         tabDecla[numdecl].region = numRegion;
         tabDecla[numdecl].description=desc;
-        //tabDecla[numdecl].execution = 
+        tabDecla[numdecl].execution = 1;
     }
     else
     {
@@ -172,7 +176,7 @@ void ajouter_var(int numdecl,int numRegion,char *type)
 	        tabDecla[deb].suivant = -1;
 	        tabDecla[deb].region = numRegion;
 	        tabDecla[deb].description=desc;
-       		//tabDecla[deb].execution = 
+       		tabDecla[deb].execution = 1;
         }
         else {
             int i = tabDecla[numdecl].suivant; int fin =0;
@@ -309,13 +313,13 @@ int association_noms(int num_lexico, int region)
 }
 
 
-void affiche_tab_decla(structDecla tab[])
+void affiche_table_decla(structDecla tab[])
 {
     int i;
     char * nature;
-    printf("\n______________Table des déclarations______________\n");
-    printf(" Numlex\t|Nature\t|Suivant|Région\t| Description\t| Exécution\n");
-    for (i=0 ; i<debordement ; i++)
+    printf("\n______________Table des déclarations_______________________________\n");
+    printf(" Numlex\t|Nature\t\t|Suivant|Région\t| Description\t| Exécution\n");
+    for (i=0 ; i<DECLARATION_MAX ; i++)
         if(tab[i].nature != -1){
                 switch(tab[i].nature){
                     case TYPE_BASE :
@@ -337,6 +341,7 @@ void affiche_tab_decla(structDecla tab[])
                     printf(" %d\t| %s\t| %d\t| %d\t| %d\t\t| %d\n",i, nature, tab[i].suivant, tab[i].region, tab[i].description, tab[i].execution);
 
         }
+	printf("\n___________________________________________________________________\n\n");
 }
 
 /*void afficher_tab_rep(){

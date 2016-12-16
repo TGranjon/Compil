@@ -4,9 +4,7 @@
 
 
 int tabbornes[TAILLE_DIMENSIONS*2];
-/**************************declaration table representation*****************************************/
 
-int tab_rep[TAILLE_MAX];  
 /**************************intialisation de la table de rep*****************************************/
 void init_tab_rep(int * tab){      
 	for(int i=0;i<TAILLE_MAX;i++)
@@ -128,8 +126,7 @@ void insertbornes( int *tabbornes){
 
 
 }
-/**********************************fonction d'insertion de nb params  procedure********************************/
-//nb params procedure à récuperer dans le yacc
+/**********************************fonction d'insertion de nb params ********************************/
 
 void insertnbparam(int nbparam){
 
@@ -141,7 +138,7 @@ void insertnbparam(int nbparam){
 
 
 
-/*******************************fonction d'insertion des params de procedure*******************/
+/*******************************fonction d'insertion des params *******************/
  
 void insertparam(char *idf , char *type){
 

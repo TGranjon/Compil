@@ -5,6 +5,7 @@
   #include "declaration.h"
   #include "lexhc.h"
   #include "table_rep.h"
+  #include "region.h"
   int nb_lignes=1;
 %}
 
@@ -43,14 +44,14 @@
 \%chaine						{return POURCENT_CHAINE;}
 \%caractere						{return POURCENT_CARACTERE;}
 
-"entier" 						{yylval.entier=avoir_num_lexico(yytext);return ENTIER;}
-"reel" 							{yylval.entier=avoir_num_lexico(yytext);return REEL;}
-"booleen"						{yylval.entier=avoir_num_lexico(yytext);return BOOLEEN;}
-"caractere"						{yylval.entier=avoir_num_lexico(yytext);return CARACTERE;}
-"chaine"						{yylval.entier=avoir_num_lexico(yytext);return CHAINE;}
-"var" 							{yylval.entier=avoir_num_lexico(yytext);return VARIABLE;}
-"proc" 							{yylval.entier=avoir_num_lexico(yytext);return PROCEDURE;}
-"fct" 							{yylval.entier=avoir_num_lexico(yytext);return FONCTION;}
+"entier" 						{return ENTIER;}
+"reel" 							{return REEL;}
+"booleen"						{return BOOLEEN;}
+"caractere"						{return CARACTERE;}
+"chaine"						{return CHAINE;}
+"var" 							{return VARIABLE;}
+"proc" 							{return PROCEDURE;}
+"fct" 							{return FONCTION;}
 	
 "retourne"						{return RETOURNE;}
 "si" 							{return SI;}
@@ -63,9 +64,9 @@
 "pour"							{return POUR;}
 "jusqua"						{return JUSQUA;}
 
-"vrai"|"faux" 					{yylval.entier=avoir_num_lexico(yytext);return BOOL;}
-0|[1-9][0-9]* 					{yylval.entier=avoir_num_lexico(yytext);return CSTE_ENTIERE;}
-[1-9]*[0-9]\.[0-9]+ 			{yylval.entier=avoir_num_lexico(yytext);return CSTE_REELE;} /*au moins un chiffre après le point*/
+"vrai"|"faux" 					{yylval.booleen=atoi(yytext);return BOOL;}
+0|[1-9][0-9]* 					{yylval.entier=atoi(yytext);return CSTE_ENTIERE;}
+[1-9]*[0-9]\.[0-9]+ 			{yylval.entier=atoi(yytext);return CSTE_REELE;} /*au moins un chiffre après le point*/
 "et" 							{return ET;}
 "ou" 							{return OU;}
 "vide"							{return VIDE;}
@@ -75,7 +76,7 @@
 
 \'[a-z A-Z]\' 					{yylval.caractere=yytext[0];return CSTE_CARACTERE;}
 \"[a-z A-Z]+\" 					{yylval.chaine=yytext;return CSTE_CHAINE;}
-[A-Z] 							{yylval.entier=avoir_num_lexico(yytext);inserer_lexeme(yytext);return IDF;}
+[A-Z]+ 							{yylval.entier=avoir_num_lexico(yytext);inserer_lexeme(yytext);return IDF;}
 
 \n 						   		{nb_lignes++;}
 %%

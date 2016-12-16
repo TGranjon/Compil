@@ -41,7 +41,7 @@ void ajouter_fct(int numdecl,int numRegion,int numdescription, int execution);  
 
 int association_noms(int num_lexico, int region);
 
-//void affiche_tab_decla(structDecla tab[]);         //procédure : affichage du tableau des déclarations
+void affiche_table_decla(structDecla tab[]);         //procédure : affichage du tableau des déclarations
 
 
 #endif
