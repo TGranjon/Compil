@@ -1,6 +1,0 @@
-pg14
-debut
-retourne vrai ;
-/*un commentaire erroné *
-fin
-sortie
