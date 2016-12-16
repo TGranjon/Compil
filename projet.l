@@ -76,7 +76,7 @@
 
 \'[a-z A-Z]\' 					{yylval.caractere=yytext[0];return CSTE_CARACTERE;}
 \"[a-z A-Z]+\" 					{yylval.chaine=yytext;return CSTE_CHAINE;}
-[A-Z] 							{yylval.entier=avoir_num_lexico(yytext);inserer_lexeme(yytext);return IDF;}
+[A-Z]+ 							{yylval.entier=avoir_num_lexico(yytext);inserer_lexeme(yytext);return IDF;}
 
 \n 						   		{nb_lignes++;}
 %%

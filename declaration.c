@@ -147,15 +147,17 @@ void ajouter_tab(int numdecl,int numRegion,int numdescription)
 
 void ajouter_var(int numdecl,int numRegion,char *type)
 {
-    int desc; int i =0, trouv =0;
+
+    int desc=0; int i =0, trouv =0;
     while ((i<TAILLE_LEXICO) && (trouv!=1)){
-        if (tableLexico[i].lexeme==type){
+        if (strcmp(tableLexico[i].lexeme, type) ==0){
             desc=i;
+
             trouv=1;
         }
         i++;
     }
-
+   
 
     if(tabDecla[numdecl].nature == -1)
     {
@@ -163,7 +165,7 @@ void ajouter_var(int numdecl,int numRegion,char *type)
         tabDecla[numdecl].suivant = -1;
         tabDecla[numdecl].region = numRegion;
         tabDecla[numdecl].description=desc;
-        //tabDecla[numdecl].execution = 
+        tabDecla[numdecl].execution = 1;
     }
     else
     {
@@ -174,7 +176,7 @@ void ajouter_var(int numdecl,int numRegion,char *type)
 	        tabDecla[deb].suivant = -1;
 	        tabDecla[deb].region = numRegion;
 	        tabDecla[deb].description=desc;
-       		//tabDecla[deb].execution = 
+       		tabDecla[deb].execution = 1;
         }
         else {
             int i = tabDecla[numdecl].suivant; int fin =0;
@@ -339,7 +341,7 @@ void affiche_table_decla(structDecla tab[])
                     printf(" %d\t| %s\t| %d\t| %d\t| %d\t\t| %d\n",i, nature, tab[i].suivant, tab[i].region, tab[i].description, tab[i].execution);
 
         }
-	printf("\n___________________________________________________________________\n");
+	printf("\n___________________________________________________________________\n\n");
 }
 
 /*void afficher_tab_rep(){

@@ -100,10 +100,10 @@ nom_type		: type_simple {$$=$1;}
 				| IDF {$$=creer_fils_frere(288,$1);}
 				;
 
-type_simple		: ENTIER {$$=creer_fils_frere(279,-1);}
-				| REEL {$$=creer_fils_frere(280,-1);}
-				| BOOLEEN {$$=creer_fils_frere(303,-1);}
-				| CARACTERE {$$=creer_fils_frere(282,-1);}
+type_simple		: ENTIER {$$=creer_fils_frere(279,0);}
+				| REEL {$$=creer_fils_frere(280,1);}
+				| BOOLEEN {$$=creer_fils_frere(303,2);}
+				| CARACTERE {$$=creer_fils_frere(282,3);}
 				| CHAINE CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_fils_frere(306,-1);}
 				;
 
