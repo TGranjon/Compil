@@ -110,10 +110,10 @@ type_simple		: ENTIER {$$=creer_fils_frere(279,0);}
 declaration_variable	: VARIABLE IDF DEUX_POINTS nom_type {ajouter_var($2,num_region,lexeme($4.lexeme));}
 						;
 
-declaration_procedure	: PROCEDURE IDF {num_region++;NIS++;} liste_parametres corps {ajouter_proc($2,num_region,case_vide(tab_rep),num_region);creer_fils_frere(284,$2);}
+declaration_procedure	: PROCEDURE IDF {num_region++;NIS++;} liste_parametres corps {ajouter_proc($2,num_region-NIS,case_vide(tab_rep),num_region);creer_fils_frere(284,$2);}
 						;
 
-declaration_fonction	: FONCTION IDF {num_region++;NIS++;} liste_parametres RETOURNE type_simple corps {ajouter_fct($2,num_region,case_vide(tab_rep),num_region);creer_fils_frere(285,$2);}
+declaration_fonction	: FONCTION IDF {num_region++;NIS++;} liste_parametres RETOURNE type_simple corps {ajouter_fct($2,num_region-NIS,case_vide(tab_rep),num_region);creer_fils_frere(285,$2);}
 						;
 
 liste_parametres	: PARENTHESE_OUVRANTE PARENTHESE_FERMANTE {$$=creer_arbre_vide();/*zero_nb_parametres(nb_parametres);insertnbparam(0);*/}
