@@ -1,5 +1,0 @@
-pg15
-debut
-ecrire ( %chaine "Hello World" ) ;
-//mot clé fin manquant
-sortie
