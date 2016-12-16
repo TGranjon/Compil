@@ -315,9 +315,9 @@ void affiche_table_decla(structDecla tab[])
 {
     int i;
     char * nature;
-    printf("\n______________Table des déclarations______________\n");
+    printf("\n______________Table des déclarations_______________________________\n");
     printf(" Numlex\t|Nature\t\t|Suivant|Région\t| Description\t| Exécution\n");
-    for (i=0 ; i<debordement ; i++)
+    for (i=0 ; i<DECLARATION_MAX ; i++)
         if(tab[i].nature != -1){
                 switch(tab[i].nature){
                     case TYPE_BASE :
@@ -339,6 +339,7 @@ void affiche_table_decla(structDecla tab[])
                     printf(" %d\t| %s\t| %d\t| %d\t| %d\t\t| %d\n",i, nature, tab[i].suivant, tab[i].region, tab[i].description, tab[i].execution);
 
         }
+	printf("\n___________________________________________________________________\n");
 }
 
 /*void afficher_tab_rep(){

@@ -64,7 +64,7 @@
 "pour"							{return POUR;}
 "jusqua"						{return JUSQUA;}
 
-"vrai"|"faux" 					{yylval.entier=atoi(yytext);return BOOL;}
+"vrai"|"faux" 					{yylval.booleen=atoi(yytext);return BOOL;}
 0|[1-9][0-9]* 					{yylval.entier=atoi(yytext);return CSTE_ENTIERE;}
 [1-9]*[0-9]\.[0-9]+ 			{yylval.entier=atoi(yytext);return CSTE_REELE;} /*au moins un chiffre après le point*/
 "et" 							{return ET;}
