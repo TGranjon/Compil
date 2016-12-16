@@ -5,16 +5,14 @@
 
 /*Déclaration de l'arbre abstrait*/
 
-struct cellule
+typedef struct cellule
 {
   int noyau; /*Correspond aux codes ci-dessus*/
   int lexeme; /*Code lexicographique correspondant*/
-  struct cellule * fils; /*Pointeur vers le premier fils*/
-  struct cellule * frere; /*Pointeur vers le premier frere*/
-};
+  struct cellule fils; /*Pointeur vers le premier fils*/
+  struct cellule frere; /*Pointeur vers le premier frere*/
+} cellule;
 
-/*Les constantes ont leur valeur dans lexeme*/
-typedef struct cellule cellule;
 
 /*Définition des codes/noyau*/
 /*Tiré de y.tab.h*/

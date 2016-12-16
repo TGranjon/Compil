@@ -1,0 +1,5 @@
+pg16
+var A : entier;
+debut
+fin
+//mot clé sortie manquant

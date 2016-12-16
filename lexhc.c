@@ -26,6 +26,7 @@ void init_hash_code(int * tab)
 	for(i=0;i<TAILLE_HASH;i++){
 		tab[i]=-1;
 	}
+
 }
 
 void init_tab_lex(){
@@ -63,7 +64,6 @@ int inserer_lexeme (char * n_lexeme){
 	int num_hash_code = hash_code(n_lexeme);        // On calcule le hash code du lexeme passé en paramètre
     int indice = tab_hash_code[num_hash_code];      // on récupère dans a l'indice du premier élément stocké dans la table lexicograpique
     int nouv_num;                              // numéro lexicographique du lexeme passé en paramètre
-
     if ( indice == -1)                                // cas où le lexème n'a pas encore été stocké dans la table
     {
         tableLexico[debut_lex].indice_n_lex = debut_lex;

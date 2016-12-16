@@ -26,7 +26,7 @@
     }
 	%token <entier> PROG 
 	%token FPROG
-	%token <chaine> TABLEAU <arbre> STRUCT
+	%token <chaine> TABLEAU  STRUCT
 	%token FSTRUCT
 	%token POINT_VIRGULE DEUX_POINTS CROCHET_OUVRANT CROCHET_FERMANT VIRGULE POINTPOINT PARENTHESE_OUVRANTE PARENTHESE_FERMANTE PIPE
 	%token <entier> OPAFF
@@ -48,6 +48,7 @@
 	%type <arbre> condition tant_que affectation variable vararithmetique varchar expression1 expression2 expression3 expressionchar expressioncomp element_tab
 	%type <arbre> nom_type type_simple
 	%type <entier> varlogique comparateur
+	%type <chaine> suite_declaration_type
 %%
 programme		: PROG  corps FPROG {$$=concat_pere_fils(creer_fils_frere(258,-1),$2);} 
 				;
@@ -73,10 +74,10 @@ declaration		: declaration_type POINT_VIRGULE {$$=creer_arbre_vide();}
 				| declaration_fonction POINT_VIRGULE {$$=$1;}
 				;
 
-declaration_type	: type_simple IDF DEUX_POINTS suite_declaration_type ;
+declaration_type	: type_simple IDF DEUX_POINTS suite_declaration_type {ajouter_type($2,num_region,case_vide(tab_rep),$4);};
 
-suite_declaration_type	: STRUCT liste_champs FSTRUCT {/*insertnbchamps(nb_champs);zero_nb_champs(nb_champs);*/ajouter_struct($1.lexeme,num_region,case_vide(tab_rep));}
-						| nom_type TABLEAU dimension {/*inserttypetab(lexeme($1.lexeme))*/;ajouter_tab($1.lexeme,num_region-NIS,case_vide(tab_rep));}
+suite_declaration_type	: STRUCT liste_champs FSTRUCT {$$=$1;/*insertnbchamps(nb_champs);zero_nb_champs(nb_champs);*/}
+						| nom_type TABLEAU dimension {$$=$2;/*inserttypetab(lexeme($1.lexeme))*/}
 						;
 
 dimension		: CROCHET_OUVRANT liste_dimensions CROCHET_FERMANT {/*insertnbdimensions(nb_dimensions);zero_nb_dimensions(nb_dimensions);*/}
@@ -194,7 +195,7 @@ variable		: vararithmetique {$$=$1;}
 				| appel {$$=$1;}
 				;
 					  
-element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_arbre_vide(260,avoir_num_lexico($1));}
+element_tab		: IDF CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_arbre_vide(260,$1);}
 				;
 
 vararithmetique		: CSTE_ENTIERE {$$=creer_fils_frere(304,$1);}
@@ -246,7 +247,8 @@ expressioncomp		: vararithmetique comparateur vararithmetique {concat_pere_fils(
 %%
 int yyerror()
 {
-  printf("Erreur de syntaxe en ligne %d",nb_lignes) ;
+  printf("Erreur de syntaxe en ligne %d\n",nb_lignes);
+  exit(-1);
 }
 
 int main(){
@@ -259,7 +261,7 @@ int main(){
 
 
 	affiche_table_hash_code(tab_hash_code);
-	affiche_table_lexico(tableLexico,10);
+	affiche_table_lexico(tableLexico,20);
 	affiche_table_decla(tabDecla);
 
 	init_tab_rep(tab_rep);

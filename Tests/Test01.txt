@@ -1,0 +1,6 @@
+pg01
+var A : entier ;
+debut
+A := 52 ;
+fin
+sortie
