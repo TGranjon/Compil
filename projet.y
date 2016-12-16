@@ -195,7 +195,7 @@ variable		: vararithmetique {$$=$1;}
 				| appel {$$=$1;}
 				;
 					  
-element_tab		: TABLEAU CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_arbre_vide(260,avoir_num_lexico($1));}
+element_tab		: IDF CROCHET_OUVRANT CSTE_ENTIERE CROCHET_FERMANT {$$=creer_arbre_vide(260,$1);}
 				;
 
 vararithmetique		: CSTE_ENTIERE {$$=creer_fils_frere(304,$1);}

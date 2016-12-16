@@ -14,13 +14,13 @@ cellule creer_arbre_vide()
 
 cellule concat_pere_fils(cellule pere, cellule fils)
 {
-  pere.fils=&fils;
+  pere.fils=fils;
   return pere;
 }
 
 cellule concat_pere_frere(cellule pere, cellule frere)
 {
-  pere.frere=&frere;
+  pere.frere=frere;
   return pere;
 }
 
