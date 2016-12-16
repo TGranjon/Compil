@@ -5,6 +5,7 @@
   #include "declaration.h"
   #include "lexhc.h"
   #include "table_rep.h"
+  #include "region.h"
   
   extern int yylex() ;
   extern int yyerror() ;
@@ -253,8 +254,16 @@ int main(){
 	init_tab_lex();
 	init_hash_code(tab_hash_code);
 	init_tab_decla();
+	init_tab_region();
+
+	inserer_lexeme("test");
+	ajouter_var(avoir_num_lexico("test"),0,"char");
+	ajouter_region(2,0,creer_arbre_vide());
+
 	affiche_table_hash_code(tab_hash_code);
 	affiche_table_lexico(tableLexico,10);
+	affiche_table_decla(tabDecla);
+	affiche_table_region(tabRegion);
 
 	init_tab_rep(tab_rep);
 }

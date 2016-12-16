@@ -1,6 +1,6 @@
 #include "region.h"
 
-structRegion tabRegion[MAX_REGION];
+
 int nbRegion = 0;
 
 void init_tab_region() {
@@ -22,7 +22,7 @@ int ajouter_region(int taille, int niveau_imbrication, cellule arbre){
   return 0;
 }
 
-void affiche_tab_region(structRegion region[]) {
+void affiche_table_region(structRegion region[]) {
 
   int i;
   printf("\n-----Table des régions-----\n");

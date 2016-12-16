@@ -311,12 +311,12 @@ int association_noms(int num_lexico, int region)
 }
 
 
-void affiche_tab_decla(structDecla tab[])
+void affiche_table_decla(structDecla tab[])
 {
     int i;
     char * nature;
     printf("\n______________Table des déclarations______________\n");
-    printf(" Numlex\t|Nature\t|Suivant|Région\t| Description\t| Exécution\n");
+    printf(" Numlex\t|Nature\t\t|Suivant|Région\t| Description\t| Exécution\n");
     for (i=0 ; i<debordement ; i++)
         if(tab[i].nature != -1){
                 switch(tab[i].nature){

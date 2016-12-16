@@ -5,6 +5,7 @@
   #include "declaration.h"
   #include "lexhc.h"
   #include "table_rep.h"
+  #include "region.h"
   int nb_lignes=1;
 %}
 
