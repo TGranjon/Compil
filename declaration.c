@@ -24,8 +24,8 @@ void init_tab_decla()
         tabDecla[i].nature = TYPE_BASE;
         tabDecla[i].suivant = -1;
         tabDecla[i].region = 0;
-        tabDecla[i].description = -1;
-      	tabDecla[i].execution = -1;
+        tabDecla[i].description = i;
+      	tabDecla[i].execution = 1;
 
         //pour les types : entier, réel, booléen, char
     }
