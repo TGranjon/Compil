@@ -1,7 +1,0 @@
-pg18
-var A : entier;
-var B : entier;
-//on sépare les déclarations par un pipe
-debut
-fin
-sortie
