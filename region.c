@@ -5,7 +5,7 @@ int nbRegion = 0;
 
 void init_tab_region() {
   int i;
-  for (i=0 ; i<=MAX_REGION ; i++) {
+  for (i=0 ; i<MAX_REGION ; i++) {
       tabRegion[i].taille = 0;
       tabRegion[i].niveau_imbrication = -1;
 	  tabRegion[i].arbre = creer_arbre_vide();
