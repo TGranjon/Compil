@@ -246,7 +246,8 @@ expressioncomp		: vararithmetique comparateur vararithmetique {concat_pere_fils(
 %%
 int yyerror()
 {
-  printf("Erreur de syntaxe en ligne %d",nb_lignes) ;
+  printf("Erreur de syntaxe en ligne %d\n",nb_lignes) ;
+  exit(-1);
 }
 
 int main(){
