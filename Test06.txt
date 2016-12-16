@@ -1,5 +1,0 @@
-pg06
-debut
-ecrire ( %chaine "OK" ) ;
-fin
-sortie
