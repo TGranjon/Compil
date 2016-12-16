@@ -17,23 +17,25 @@ int taille_tableau(){
 
 void init_tab_decla()
 {
-    int i;
-    for(i=0 ; i<=3 ; i++)
+    for(int i=0 ; i<=3 ; i++)
     {
+
+	
         tabDecla[i].nature = TYPE_BASE;
         tabDecla[i].suivant = -1;
         tabDecla[i].region = 0;
         tabDecla[i].description = -1;
       	tabDecla[i].execution = -1;
+
         //pour les types : entier, réel, booléen, char
     }
-    for(i=4 ; i<=DECLARATION_MAX ; i++)
+    for(int j=4 ; j<DECLARATION_MAX ; j++)
     {
-        tabDecla[i].nature = -1;
-        tabDecla[i].suivant = -1;
-        tabDecla[i].region = -1;
-        tabDecla[i].description = -1;
-      	tabDecla[i].execution = -1;
+        tabDecla[j].nature = -1;
+        tabDecla[j].suivant = -1;
+        tabDecla[j].region = -1;
+        tabDecla[j].description = -1;
+      	tabDecla[j].execution = -1;
     }
 }
 

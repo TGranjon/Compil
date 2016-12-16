@@ -250,9 +250,11 @@ int yyerror()
 }
 
 int main(){
-init_tab_lex();
-//init_hash_code();
-init_tab_decla();
+	init_tab_lex();
+	init_hash_code(tab_hash_code);
+	init_tab_decla();
+	affiche_table_hash_code(tab_hash_code);
+	affiche_table_lexico(tableLexico,10);
 
-init_tab_rep(tab_rep);
+	init_tab_rep(tab_rep);
 }
