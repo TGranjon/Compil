@@ -3,7 +3,7 @@ var A : entier ; |
 var B : entier; |
 var C : booleen; |
 proc Z (B : entier)
-var C : entier ;
+var G : entier ;
 debut
 C := 5;
 
