@@ -80,3 +80,8 @@
 
 \n 						   		{nb_lignes++;}
 %%
+int yyerror (char * msg)
+{
+	printf("\nIl y a une erreur a la ligne %d pres de l'expression '%s'\n",nb_lignes,yytext);
+	exit(-1);
+}

@@ -245,11 +245,11 @@ expressioncomp		: vararithmetique comparateur vararithmetique {concat_pere_fils(
 					;
 
 %%
-int yyerror()
+/*int yyerror()
 {
   printf("Erreur de syntaxe en ligne %d\n",nb_lignes);
   exit(-1);
-}
+}*/
 
 int main(){
 	init_tab_lex();
