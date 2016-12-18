@@ -9,8 +9,8 @@ typedef struct cellule
 {
   int noyau; /*Correspond aux codes ci-dessus*/
   int lexeme; /*Code lexicographique correspondant*/
-  struct cellule fils; /*Pointeur vers le premier fils*/
-  struct cellule frere; /*Pointeur vers le premier frere*/
+  struct cellule * fils; /*Pointeur vers le premier fils*/
+  struct cellule * frere; /*Pointeur vers le premier frere*/
 } cellule;
 
 
